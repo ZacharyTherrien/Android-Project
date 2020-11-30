@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.project.R;
-import com.example.project.ui.NoteApplication;
+import com.example.assignment_1_note_project.R;
+import com.example.notes.NoteApplication;
 
 public class RegisterDialogFragment extends DialogFragment {
 
