@@ -29,13 +29,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "collaborator",
-            joinColumns = @JoinColumn(name = "user"),
-            inverseJoinColumns = @JoinColumn(name = "note")
-    )
-    private List<Note> notes;
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
 
     public String getUuid() {
         return uuid;
@@ -70,4 +65,11 @@ public class User {
         this.password = password;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 }
