@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/task_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Task: "
+        app:fontFamily="sans-serif-medium" />
+
     <EditText
         android:id="@+id/name_EditText"
         android:layout_width="match_parent"
@@ -36,7 +43,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/center_GuideLine"
@@ -44,14 +51,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_begin="205dp"
+            app:layout_constraintGuide_end="206dp"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/amount_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="16dp"
             android:text="Add by Amount:"
             app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
             app:layout_constraintHorizontal_bias="0.489"
@@ -62,7 +69,6 @@
             android:id="@+id/amount_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:text="Add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
@@ -72,21 +78,19 @@
             android:id="@+id/dates_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginRight="60dp"
+            android:layout_marginTop="16dp"
             android:text="Add by dates:"
             app:layout_constraintBottom_toTopOf="@+id/top_GuideLine"
             app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
-            app:layout_constraintHorizontal_bias="0.827"
+            app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/amount_TextView" />
+            app:layout_constraintTop_toBottomOf="@+id/amount_TextView"
+            app:layout_constraintVertical_bias="0.505" />
 
         <Button
             android:id="@+id/dates_BUtton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:text="Add"
             app:layout_constraintBottom_toTopOf="@+id/top_GuideLine"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="275dp" />
+            app:layout_constraintGuide_begin="165dp" />
 
         <TextView
             android:id="@+id/timer_TextView"
@@ -126,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="390dp" />
+            app:layout_constraintGuide_begin="257dp" />
 
         <Button
             android:id="@+id/start-stop_Button"
@@ -143,17 +147,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="481dp" />
-
-        <Button
-            android:id="@+id/return_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Return"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/bottom_GuideLine" />
+            app:layout_constraintGuide_begin="335dp" />
 
         <TextView
             android:id="@+id/time_TextView"
@@ -165,5 +159,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/middle_GuideLine" />
 
+        <Button
+            android:id="@+id/return_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Return"
+            app:layout_constraintBottom_toTopOf="@+id/end_GuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bottom_GuideLine" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_GuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="442dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>
