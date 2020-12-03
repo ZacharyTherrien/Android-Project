@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project.R;
 import com.example.project.model.Task;
 import com.example.project.ui.task_entry.TaskEntryActivity;
+import com.example.project.ui.task_overview.TaskOverviewActivity;
 
 import java.util.List;
 
@@ -20,9 +21,7 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
 
     private List<Task> tasks;
 
-    public UserStatsAdapter(List<Task> tasks) {
-        this.tasks = tasks;
-    }
+    public UserStatsAdapter(List<Task> tasks) { this.tasks = tasks; }
 
     @NonNull
     @Override
@@ -39,9 +38,7 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
     }
 
     @Override
-    public int getItemCount() {
-        return 0;
-    }
+    public int getItemCount() { return tasks.size(); }
 
     public class TaskViewHolder extends RecyclerView.ViewHolder {
 
@@ -65,7 +62,7 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
                     // Create an intent
                     // This intent holds activity and the activity it wants to do:
                     // TaskEntryActivity
-                    Intent intent = new Intent(act, TaskEntryActivity.class);
+                    Intent intent = new Intent(act, TaskOverviewActivity.class);
                     // Extra tendency
                     // Set the intent's extra (map-like object) to the task
                     // So that it can be set upon entering the TaskEntryActivity
@@ -74,13 +71,13 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
                     act.startActivityForResult(intent, 1);
                 }
             });
-
         }
 
         public void set(Task task, int position) {
             this.task = task;
             this.position = position;
             taskNameTextView.setText(task.getName().toString());
-            taskTimeTextView.setText(task.getHours().toString());
+            taskTimeTextView.setText(Integer.toString(task.getTotalTime()));
         }
     }
+}
