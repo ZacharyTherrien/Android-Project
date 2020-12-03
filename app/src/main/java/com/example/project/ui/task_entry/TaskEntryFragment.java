@@ -183,14 +183,9 @@ public class TaskEntryFragment extends Fragment {
 
     }
 
-<<<<<<< Updated upstream
     private void SwitchObtained(){
         dateObtained = false;
     }
-=======
-    @Override
-    public void onAttach(){}
->>>>>>> Stashed changes
 
     private void GetDate(int year, int month, int day){
         //Create a calendar to help create the date.
