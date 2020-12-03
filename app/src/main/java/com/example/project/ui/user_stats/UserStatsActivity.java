@@ -21,8 +21,8 @@ public class UserStatsActivity extends AppCompatActivity {
 
     // ADDED FOR PIE CHART
     AnyChartView anyChartView;
-    String[] months = {"Jan", "Feb", "Mar"};
-    int[] earnings = {500, 800, 2000};
+    String[] names = new String[5];
+    int[] times = new int[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +35,21 @@ public class UserStatsActivity extends AppCompatActivity {
 
         // ADDED FOR PIE CHART
         anyChartView = findViewById(R.id.any_chart_view);
-        setupPieChart();
+        setupPieChart(userStatsFragment);
     }
 
     // ADDED FOR PIE CHART
-    public void setupPieChart() {
+    public void setupPieChart(UserStatsFragment frg) {
         Pie pie = AnyChart.pie();
         List<DataEntry> dataEntries = new ArrayList<>();
 
-        for (int i = 0; i < months.length; i++) {
-            dataEntries.add(new ValueDataEntry(months[i], earnings[i]));
+        for (int i = 0; i < frg.tasks.size(); i++) {
+            names[i] = frg.tasks.get(i).getName();
+            times[i] = frg.tasks.get(i).getTotalTime();
+        }
+
+        for (int i = 0; i < names.length; i++) {
+            dataEntries.add(new ValueDataEntry(names[i], times[i]));
         }
 
         pie.data(dataEntries);
