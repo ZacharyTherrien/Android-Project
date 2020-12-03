@@ -1,4 +1,4 @@
-package com.example.notes.util;
+package com.example.project.ui.util;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
