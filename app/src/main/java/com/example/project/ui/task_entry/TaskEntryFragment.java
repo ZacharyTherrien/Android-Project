@@ -48,6 +48,7 @@ public class TaskEntryFragment extends Fragment {
     Button datesButton;
     Button timerButton;
     Chronometer timeChronometer;
+    Button resetButton;
     Button startStopButton;
 
     //Fields
@@ -70,6 +71,7 @@ public class TaskEntryFragment extends Fragment {
         datesButton = root.findViewById(R.id.dates_Button);
         timerButton = root.findViewById(R.id.timer_Button);
         timeChronometer = root.findViewById(R.id.time_Chronometer);
+        resetButton = root.findViewById(R.id.reset_Button);
         startStopButton = root.findViewById(R.id.startStop_Button);
 
         //Set values into views and fields
@@ -118,27 +120,11 @@ public class TaskEntryFragment extends Fragment {
             }
         });
 
-        startStopButton.setOnClickListener(new View.OnClickListener() {
+        resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //If the timer has not started yet, start it, otherwise, pause the timer.
-                if(!timerOn){
-                    startStopButton.setText("Stop");
-                    if(pausedAt != 0)
-                        timeChronometer.setBase(timeChronometer.getBase() + SystemClock.elapsedRealtime() - pausedAt);
-                    else
-                        timeChronometer.setBase(SystemClock.elapsedRealtime());
-                    timeChronometer.start();
-                    //Do not allow the user to enter time from timer while it's running.
-                    timerButton.setEnabled(false);
-                }
-                else{
-                    startStopButton.setText("Start");
-                    pausedAt = SystemClock.elapsedRealtime();
-                    timeChronometer.stop();
-                    timerButton.setEnabled(true);
-                }
-                timerOn = !timerOn;
+                timeChronometer.setBase(SystemClock.elapsedRealtime());
+                pausedAt = 0;
             }
         });
 
@@ -155,7 +141,37 @@ public class TaskEntryFragment extends Fragment {
             }
         });
 
+        startStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //If the timer has not started yet, start it, otherwise, pause the timer.
+                if(!timerOn){
+                    startStopButton.setText("Stop");
+                    if(pausedAt != 0)
+                        timeChronometer.setBase(timeChronometer.getBase() + SystemClock.elapsedRealtime() - pausedAt);
+                    else
+                        timeChronometer.setBase(SystemClock.elapsedRealtime());
+                    timeChronometer.start();
+                    //Do not allow the user to enter time from timer while it's running nor reset.
+                    EnableTimerButtons(false);
+                }
+                else{
+                    startStopButton.setText("Start");
+                    pausedAt = SystemClock.elapsedRealtime();
+                    timeChronometer.stop();
+                    //Once the time is stopped, enable buttons again.
+                    EnableTimerButtons(true);
+                }
+                timerOn = !timerOn;
+            }
+        });
+
         return root;
+    }
+
+    public void EnableTimerButtons(boolean enable){
+        timerButton.setEnabled(enable);
+        resetButton.setEnabled(enable);
     }
 
     public void RetrieveAmount(){

@@ -112,14 +112,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="257dp" />
+            app:layout_constraintGuide_begin="279dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_GuideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="335dp" />
+            app:layout_constraintGuide_begin="430dp" />
 
 
         <Chronometer
@@ -148,6 +148,15 @@
             app:layout_constraintBottom_toTopOf="@+id/bottom_GuideLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/reset_Button" />
+
+        <Button
+            android:id="@+id/reset_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
             app:layout_constraintTop_toTopOf="@+id/middle_GuideLine" />
 
         <Button
@@ -165,7 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="442dp" />
+            app:layout_constraintGuide_begin="510dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
