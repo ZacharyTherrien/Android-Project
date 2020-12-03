@@ -2,13 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/username_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:shadowColor="#FFFFFF"
         android:text="User's Stats"
+        android:textColor="#3F51B5"
+        android:textColorHighlight="#FFFFFF"
         android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/taskChart_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Task Chart"
+        android:textSize="36sp" />
+
+    <com.anychart.AnyChartView
+        android:id="@+id/any_chart_view"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp" />
+
+    <TextView
+        android:id="@+id/topTasks_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Top 5 Tasks"
+        android:textSize="36sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/topTasks_recylerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>
