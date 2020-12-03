@@ -38,6 +38,17 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/topTasks_recylerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/totalTime_textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Total Time"
+        android:textColor="#4CAF50"
+        android:textSize="30sp" />
 
 </LinearLayout>
