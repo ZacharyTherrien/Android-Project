@@ -53,7 +53,6 @@ public class TaskEntryFragment extends Fragment {
     //Fields
     Entry entry;
     long dateStart;
-    long dateEnd;
     boolean dateObtained;
     long pausedAt;
     boolean timerOn;
@@ -148,8 +147,8 @@ public class TaskEntryFragment extends Fragment {
             public void onClick(View v) {
                 //Add the time to the fragment and the entry.
                 int seconds = (int) (SystemClock.elapsedRealtime() - timeChronometer.getBase()) / 1000 - 1;
-                totalTextView.setText(Long.toString(Integer.parseInt(totalTextView.getText().toString()) + seconds));
                 entry.AddTime(seconds);
+                totalTextView.setText(Integer.toString(entry.getTime()));
                 //Finally, reset it.
                 timeChronometer.setBase(SystemClock.elapsedRealtime());
                 pausedAt = 0;
@@ -161,9 +160,19 @@ public class TaskEntryFragment extends Fragment {
 
     public void RetrieveAmount(){
         AmountFragment amountFragment = new AmountFragment();
-//        amountFragment.setTargetFragment(this, 1);
+        amountFragment.setOnAmountenteredListener(new AmountFragment.OnAmountEnteredListener() {
+            @Override
+            public void onAmountEntered(int amount, String unit) {
+                if(unit.equals("Minutes"))
+                    amount = amount * 60;
+                else if(unit.equals("Hours"))
+                    amount = amount * 60 * 60;
+                //Add the time to the entry.
+                entry.AddTime(amount);
+                totalTextView.setText(Integer.toString(entry.getTime()));
+            }
+        });
         amountFragment.show(getChildFragmentManager(), "Choose Amount");
-//        getTargetFragment().onActivityResult(getTargetRequestCode(), 1, null);
     }
 
     //Provided an instance of entry, set it and its fields.
@@ -198,12 +207,18 @@ public class TaskEntryFragment extends Fragment {
     }
 
     private void GetTime(Date newDate, int hour, int minute){
+        //Set the given time.
         newDate.setHours(hour);
         newDate.setMinutes(minute);
+        //Since the seconds cannot even be chosen, set it to 0. Helps a lot with precision.
+        newDate.setSeconds(0);
+        //Store the current amount of time from the current instance date.
         long time = newDate.getTime();
         if(!dateObtained) {
+            //Since the first date has been entered, store its value to calculate the total later later.
             dateStart = time;
             dateObtained = true;
+            //Create a new date picker dialog that will go through the process of setting date and time.
             DatePickerDialogFragment datePickerEnd = DatePickerDialogFragment.create(new Date(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -214,10 +229,16 @@ public class TaskEntryFragment extends Fragment {
         }
         else{
             dateObtained = false;
+            //Only add it if the end date comes after the start date.
             if(time > dateStart){
+                //Set the start and end date.
+                entry.setStarted_on(new Date(dateStart));
+                entry.setEnded_on(newDate);
+                //Get the total amount of seconds from miliseconds.
                 long total = (time - dateStart) / 1000;
-                totalTextView.setText(Long.toString(Integer.parseInt(totalTextView.getText().toString()) + (int)total));
+                //Add the time in the entry
                 entry.AddTime((int)total);
+                totalTextView.setText(Integer.toString(entry.getTime()));
             }
         }
     }

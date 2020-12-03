@@ -34,7 +34,7 @@ public class TaskEntryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = getIntent();
                 setResult(Activity.RESULT_OK, intent);
-                intent.putExtra("Entry", "TODO: GET ENTRY.");
+                intent.putExtra("Entry", TaskEntryActivity.this.entry);
                 finish();
             }
         });
