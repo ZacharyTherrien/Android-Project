@@ -19,15 +19,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Entry Name" />
-
-    <EditText
-        android:id="@+id/description_EditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Description" />
+        android:hint="Entry Name"/>
 
     <TextView
         android:id="@+id/indicateor_TextView"
@@ -87,16 +79,6 @@
             app:layout_constraintTop_toBottomOf="@+id/amount_TextView"
             app:layout_constraintVertical_bias="0.505" />
 
-        <Button
-            android:id="@+id/dates_BUtton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            app:layout_constraintBottom_toTopOf="@+id/top_GuideLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
-            app:layout_constraintTop_toBottomOf="@+id/amount_Button" />
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_GuideLine"
             android:layout_width="wrap_content"
@@ -132,16 +114,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="257dp" />
 
-        <Button
-            android:id="@+id/start-stop_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_GuideLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
-            app:layout_constraintTop_toTopOf="@+id/middle_GuideLine" />
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_GuideLine"
             android:layout_width="wrap_content"
@@ -149,14 +121,33 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="335dp" />
 
-        <TextView
-            android:id="@+id/time_TextView"
+
+        <Chronometer
+            android:id="@+id/time_Chronometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00:00"
             app:layout_constraintBottom_toTopOf="@+id/bottom_GuideLine"
             app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/middle_GuideLine" />
+
+        <Button
+            android:id="@+id/dates_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            app:layout_constraintBottom_toTopOf="@+id/top_GuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/amount_Button" />
+
+        <Button
+            android:id="@+id/startStop_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_GuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
             app:layout_constraintTop_toTopOf="@+id/middle_GuideLine" />
 
         <Button
