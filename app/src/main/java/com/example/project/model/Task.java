@@ -25,6 +25,13 @@ public class Task implements Parcelable {
         this.description = description;
     }
 
+    public Task(Parcel in) {
+        this.uuid = in.readString();
+        this.user_uuid = in.readString();
+        this.name = in.readString();
+        this.description = in.readString();
+    }
+
     //Methods
     public String getUuid() {
         return uuid;
@@ -63,7 +70,7 @@ public class Task implements Parcelable {
     }
 
     public int getTotalTime(){
-        return -1;
+        return 1;
     }
 
     public Task Clone(){
@@ -74,6 +81,18 @@ public class Task implements Parcelable {
         clone.description = this.description;
         return clone;
     }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 
     //Overried Methods
     @Override
@@ -92,7 +111,10 @@ public class Task implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(this.uuid);
+        parcel.writeString(this.user_uuid);
+        parcel.writeString(this.name);
+        parcel.writeString(this.description);
     }
 }
