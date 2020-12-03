@@ -19,11 +19,11 @@
         android:layout_weight="10">
 
         <TextView
-            android:id="@+id/overview_item_title"
+            android:id="@+id/overview_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:hint="title"
+            android:textSize="15sp"
+            android:hint="name"
             tools:ignore="HardcodedText">
         </TextView>
 
@@ -39,7 +39,7 @@
             android:id="@+id/overview_item_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
+            android:textSize="15sp"
             android:gravity="end"
             android:hint="time"
             tools:ignore="HardcodedText">
