@@ -17,11 +17,12 @@ import java.util.List;
 
 public class UserStatsActivity extends AppCompatActivity {
 
+    private UserStatsFragment userStatsFragment;
+
     // ADDED FOR PIE CHART
     AnyChartView anyChartView;
     String[] months = {"Jan", "Feb", "Mar"};
     int[] earnings = {500, 800, 2000};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ public class UserStatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_stats);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        userStatsFragment = (UserStatsFragment) getSupportFragmentManager().findFragmentById(R.id.list_Fragment);
 
         // ADDED FOR PIE CHART
         anyChartView = findViewById(R.id.any_chart_view);
