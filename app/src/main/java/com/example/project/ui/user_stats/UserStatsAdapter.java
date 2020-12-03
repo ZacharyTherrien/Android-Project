@@ -76,8 +76,15 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
         public void set(Task task, int position) {
             this.task = task;
             this.position = position;
-            taskNameTextView.setText(task.getName().toString());
+            taskNameTextView.setText(task.getName());
             taskTimeTextView.setText(Integer.toString(task.getTotalTime()));
         }
+    }
+
+    public void create() {
+        Task t = new Task();
+        this.tasks.add(t);
+        this.notifyItemInserted(tasks.size());
+        this.notifyDataSetChanged();
     }
 }

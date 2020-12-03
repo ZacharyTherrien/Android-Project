@@ -23,12 +23,13 @@ public class UserStatsFragment extends Fragment {
 
     UserStatsAdapter adapter;
     private RecyclerView topTasksRecyclerView;
+    private TextView totalTimeTextView;
+    List<Task> tasks = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_user_stats, container, false);
 
-        List<Task> tasks = new ArrayList<>();
         tasks.add(new Task("0001", "0001", "Jogging", "Run around the block for some exercise."));
         tasks.add(new Task("0002", "0001", "Cooking", "Cook dinner for the kids."));
         tasks.add(new Task("0003", "0001", "Cleaning", "Clean the house before inviting guests."));
@@ -36,11 +37,23 @@ public class UserStatsFragment extends Fragment {
         tasks.add(new Task("0005", "0001", "Shopping", "Get groceries while they're on sale."));
 
         topTasksRecyclerView = root.findViewById(R.id.topTasks_recylerView);
+        totalTimeTextView = root.findViewById(R.id.totalTime_textView);
+
+        int totalTime = getTotalTime(tasks);
+        totalTimeTextView.setText(Integer.toString(totalTime) + " total seconds");
 
         adapter = new UserStatsAdapter(tasks);
         topTasksRecyclerView.setAdapter(adapter);
         topTasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return root;
+    }
+
+    public int getTotalTime(List<Task> list) {
+        int sum = 0;
+        for (Task t: list) {
+            sum += t.getTotalTime();
+        }
+        return sum;
     }
 }
