@@ -1,6 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/task_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Task: "
+        app:fontFamily="sans-serif-medium" />
+
+    <EditText
+        android:id="@+id/name_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Entry Name" />
+
+    <TextView
+        android:id="@+id/indicateor_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Time:" />
+
+    <TextView
+        android:id="@+id/total_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/center_GuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_end="206dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/amount_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Add by Amount:"
+            app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/amount_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dates_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Add by dates:"
+            app:layout_constraintBottom_toTopOf="@+id/top_GuideLine"
+            app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/amount_TextView"
+            app:layout_constraintVertical_bias="0.505" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top_GuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="165dp" />
+
+        <TextView
+            android:id="@+id/timer_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add by Timer"
+            app:layout_constraintBottom_toTopOf="@+id/middle_GuideLine"
+            app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/top_GuideLine" />
+
+        <Button
+            android:id="@+id/timer_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            app:layout_constraintBottom_toTopOf="@+id/middle_GuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintTop_toTopOf="@+id/top_GuideLine"
+            app:layout_constraintVertical_bias="0.537" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/middle_GuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="257dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_GuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="335dp" />
+
+
+        <Chronometer
+            android:id="@+id/time_Chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_GuideLine"
+            app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/middle_GuideLine" />
+
+        <Button
+            android:id="@+id/dates_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            app:layout_constraintBottom_toTopOf="@+id/top_GuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/amount_Button" />
+
+        <Button
+            android:id="@+id/startStop_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_GuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
+            app:layout_constraintTop_toTopOf="@+id/middle_GuideLine" />
+
+        <Button
+            android:id="@+id/return_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Return"
+            app:layout_constraintBottom_toTopOf="@+id/end_GuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bottom_GuideLine" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_GuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="442dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
