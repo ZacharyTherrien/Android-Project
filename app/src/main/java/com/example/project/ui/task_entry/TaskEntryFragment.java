@@ -1,5 +1,7 @@
 package com.example.project.ui.task_entry;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -9,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,8 +23,22 @@ import androidx.fragment.app.Fragment;
 import com.example.project.R;
 import com.example.project.model.Entry;
 import com.example.project.ui.util.AmountFragment;
+import com.example.project.ui.util.DatePickerDialogFragment;
+import com.example.project.ui.util.TimePickerDialogFragment;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class TaskEntryFragment extends Fragment {
+
+    /**
+     * TODO Ask Ian:
+     * - How to get a value from the dialog fragment.
+     * - A few milisecond delay when subtracting date's times.
+     * - EntryActivity issue with scope in onClickListener.
+     * - Stack of activity/intent from home -> user -> task.
+     */
+
 
     //Get all the necessary views.
     TextView taskTextView;
@@ -34,6 +52,9 @@ public class TaskEntryFragment extends Fragment {
 
     //Fields
     Entry entry;
+    long dateStart;
+    long dateEnd;
+    boolean dateObtained;
     long pausedAt;
     boolean timerOn;
 
@@ -54,6 +75,7 @@ public class TaskEntryFragment extends Fragment {
 
         //Set values into views and fields
         entry = new Entry();
+        dateObtained = false;
         startStopButton.setText("Start");
         timerOn = false;
 
@@ -85,7 +107,15 @@ public class TaskEntryFragment extends Fragment {
         datesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //First get the starting date.
+                DatePickerDialogFragment datePickerStart = DatePickerDialogFragment.create(new Date(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        SwitchObtained();
+                        GetDate(year, month, dayOfMonth);
+                    }
+                });
+                datePickerStart.show(getFragmentManager(), "Date Picker");
             }
         });
 
@@ -131,9 +161,9 @@ public class TaskEntryFragment extends Fragment {
 
     public void RetrieveAmount(){
         AmountFragment amountFragment = new AmountFragment();
-        amountFragment.setTargetFragment(this, 1);
+//        amountFragment.setTargetFragment(this, 1);
         amountFragment.show(getChildFragmentManager(), "Choose Amount");
-        getTargetFragment().onActivityResult(getTargetRequestCode(), 1, null);
+//        getTargetFragment().onActivityResult(getTargetRequestCode(), 1, null);
     }
 
     //Provided an instance of entry, set it and its fields.
@@ -144,7 +174,51 @@ public class TaskEntryFragment extends Fragment {
 
     }
 
-    @Override
-    public void onAttach(){}
+    private void SwitchObtained(){
+        dateObtained = false;
+    }
 
+    private void GetDate(int year, int month, int day){
+        //Create a calendar to help create the date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONDAY, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        //Keep track of the values of the chosen date.
+        final Date NEW_DATE = calendar.getTime();
+        //Now get the time.
+        TimePickerDialogFragment timePicker = TimePickerDialogFragment.create(new Date(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                //Go to set the time.
+                GetTime(NEW_DATE, hour, minute);
+            }
+        });
+        timePicker.show(getFragmentManager(), "Time Picker");
+    }
+
+    private void GetTime(Date newDate, int hour, int minute){
+        newDate.setHours(hour);
+        newDate.setMinutes(minute);
+        long time = newDate.getTime();
+        if(!dateObtained) {
+            dateStart = time;
+            dateObtained = true;
+            DatePickerDialogFragment datePickerEnd = DatePickerDialogFragment.create(new Date(), new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    GetDate(year, month, dayOfMonth);
+                }
+            });
+            datePickerEnd.show(getFragmentManager(), "Date Picker");
+        }
+        else{
+            dateObtained = false;
+            if(time > dateStart){
+                long total = (time - dateStart) / 1000;
+                totalTextView.setText(Long.toString(Integer.parseInt(totalTextView.getText().toString()) + (int)total));
+                entry.AddTime((int)total);
+            }
+        }
+    }
 }
