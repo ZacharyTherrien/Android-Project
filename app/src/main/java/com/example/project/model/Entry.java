@@ -33,6 +33,16 @@ public class Entry implements Parcelable {
         this.ended_on = ended_on;
     }
 
+    public Entry(Parcel in) {
+        this.uuid = in.readString();
+        this.task_uuid = in.readString();
+        this.name = in.readString();
+        this.time = in.readInt();
+        this.added_on = (Date) in.readSerializable();
+        this.started_on = (Date) in.readSerializable();
+        this.ended_on = (Date) in.readSerializable();
+    }
+
     //Methods
     public String getUuid() {
         return uuid;
@@ -97,6 +107,18 @@ public class Entry implements Parcelable {
         clone.ended_on = this.ended_on;
         return clone;
     }
+
+    public static final Creator<Entry> CREATOR = new Creator<Entry>() {
+        @Override
+        public Entry createFromParcel(Parcel in) {
+            return new Entry(in);
+        }
+
+        @Override
+        public Entry[] newArray(int size) {
+            return new Entry[size];
+        }
+    };
 
     @Override
     public String toString() {

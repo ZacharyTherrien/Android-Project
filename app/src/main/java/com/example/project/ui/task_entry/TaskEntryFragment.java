@@ -133,7 +133,8 @@ public class TaskEntryFragment extends Fragment {
             public void onClick(View v) {
                 //Add the time to the fragment and the entry.
                 int seconds = (int) (SystemClock.elapsedRealtime() - timeChronometer.getBase()) / 1000 - 1;
-                entry.AddTime(seconds);
+                if(seconds > 0)
+                    entry.AddTime(seconds);
                 totalTextView.setText(Integer.toString(entry.getTime()));
                 //Finally, reset it.
                 timeChronometer.setBase(SystemClock.elapsedRealtime());
