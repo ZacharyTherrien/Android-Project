@@ -19,8 +19,6 @@ public class HomeActivity extends AppCompatActivity {
 
     RecyclerView tasksRecyclerView;
 
-    //TODO remove later
-    Button button1;
     Button button2;
 
     @Override
@@ -32,18 +30,7 @@ public class HomeActivity extends AppCompatActivity {
 
         tasksRecyclerView = findViewById(R.id.tasks_RecyclerView);
 
-        //TODO remove later.
-        button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.button2);
-        button1.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Activity activity = (Activity) v.getContext();
-                Intent intent = new Intent(activity, TaskOverviewActivity.class);
-                activity.startActivityForResult(intent, 1);
-            }
-        });
         button2.setOnClickListener(new View.OnClickListener(){
 
             @Override

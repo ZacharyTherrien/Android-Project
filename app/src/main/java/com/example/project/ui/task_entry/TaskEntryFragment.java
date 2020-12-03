@@ -48,6 +48,7 @@ public class TaskEntryFragment extends Fragment {
     Button datesButton;
     Button timerButton;
     Chronometer timeChronometer;
+    Button resetButton;
     Button startStopButton;
 
     //Fields
@@ -70,6 +71,7 @@ public class TaskEntryFragment extends Fragment {
         datesButton = root.findViewById(R.id.dates_Button);
         timerButton = root.findViewById(R.id.timer_Button);
         timeChronometer = root.findViewById(R.id.time_Chronometer);
+        resetButton = root.findViewById(R.id.reset_Button);
         startStopButton = root.findViewById(R.id.startStop_Button);
 
         //Set values into views and fields
@@ -118,6 +120,28 @@ public class TaskEntryFragment extends Fragment {
             }
         });
 
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeChronometer.setBase(SystemClock.elapsedRealtime());
+                pausedAt = 0;
+            }
+        });
+
+        timerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Add the time to the fragment and the entry.
+                int seconds = (int) (SystemClock.elapsedRealtime() - timeChronometer.getBase()) / 1000 - 1;
+                if(seconds > 0)
+                    entry.AddTime(seconds);
+                totalTextView.setText(Integer.toString(entry.getTime()));
+                //Finally, reset it.
+                timeChronometer.setBase(SystemClock.elapsedRealtime());
+                pausedAt = 0;
+            }
+        });
+
         startStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,33 +153,26 @@ public class TaskEntryFragment extends Fragment {
                     else
                         timeChronometer.setBase(SystemClock.elapsedRealtime());
                     timeChronometer.start();
-                    //Do not allow the user to enter time from timer while it's running.
-                    timerButton.setEnabled(false);
+                    //Do not allow the user to enter time from timer while it's running nor reset.
+                    EnableTimerButtons(false);
                 }
                 else{
                     startStopButton.setText("Start");
                     pausedAt = SystemClock.elapsedRealtime();
                     timeChronometer.stop();
-                    timerButton.setEnabled(true);
+                    //Once the time is stopped, enable buttons again.
+                    EnableTimerButtons(true);
                 }
                 timerOn = !timerOn;
             }
         });
 
-        timerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Add the time to the fragment and the entry.
-                int seconds = (int) (SystemClock.elapsedRealtime() - timeChronometer.getBase()) / 1000 - 1;
-                entry.AddTime(seconds);
-                totalTextView.setText(Integer.toString(entry.getTime()));
-                //Finally, reset it.
-                timeChronometer.setBase(SystemClock.elapsedRealtime());
-                pausedAt = 0;
-            }
-        });
-
         return root;
+    }
+
+    public void EnableTimerButtons(boolean enable){
+        timerButton.setEnabled(enable);
+        resetButton.setEnabled(enable);
     }
 
     public void RetrieveAmount(){
