@@ -6,12 +6,13 @@ android {
 
     defaultConfig {
         applicationId "com.example.project"
-        minSdkVersion 16
+        minSdkVersion 19 // CHANGED 16 -> 19 FOR PIE CHART
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true // ADDED FOR PIE CHART
     }
 
     buildTypes {
@@ -30,5 +31,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2' // ADDED FOR PIE CHART
+    implementation 'com.android.support:multidex:1.0.3' // ADDED FOR PIE CHART
 }
