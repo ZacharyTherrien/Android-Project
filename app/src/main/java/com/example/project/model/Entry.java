@@ -18,8 +18,6 @@ public class Entry implements Parcelable {
 
     //Constructors
     public Entry(){
-        this.uuid = java.util.UUID.randomUUID().toString();
-        this.task_uuid = null;
         this.name = "";
         this.time = 0;
         this.added_on = new Date();
