@@ -58,13 +58,49 @@ public class HomeFragment extends Fragment {
         tasks.add(new Task("00010", "0001", "Shopping", "Get groceries while they're on sale."));
 
         adapter = new UserStatsAdapter(tasks);
-        tasksRecycleView.setAdapter(adapter);
         tasksRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         addFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //adapter.create();
+            }
+        });
+
+        final LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
+        NoteApplication taskApplication = (NoteApplication) getActivity().getApplication();
+        LoginManager loginManager = taskApplication.getLoginManager();
+        loginDialogFragment.show(getChildFragmentManager(), "Login");
+        loginManager.setOnLoginListener(new OnLoginListener() {
+            @Override
+            public void onLogin(String UUID) {
+                loginDialogFragment.dismiss();
+                tasksRecycleView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onLogout() {
+
+            }
+
+            @Override
+            public void onRegister(String UUID) {
+
+            }
+
+            @Override
+            public void onError(String message) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Error when login.")
+                        .setMessage(message)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
             }
         });
 
