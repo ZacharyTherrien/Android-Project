@@ -7,9 +7,9 @@ public interface OnLoginListener {
 
     /**
      * Called when a login event occurs.
-     * @param uuid The UUID of the logged in user.
+     * @param UUID the UUID of the logged in user.
      */
-    void onLogin(String uuid);
+    void onLogin(String UUID);
 
     /**
      * Called when a logout event occurs.
@@ -18,13 +18,13 @@ public interface OnLoginListener {
 
     /**
      * Called when a register event occurs.
-     * @param uuid The UUID of the registered in user.
+     * @param UUID the UUID of the registered user.
      */
-    void onRegister(String uuid);
+    void onRegister(String UUID);
 
     /**
      * Called when an error occurs in login/register.
-     * @param message
+     * @param message the error message.
      */
     void onError(String message);
 }

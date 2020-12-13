@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.project.ui.NoteApplication;
 import com.example.project.R;
+import com.example.project.ui.NoteApplication;
 
 public class RegisterDialogFragment extends DialogFragment {
 
@@ -51,10 +51,11 @@ public class RegisterDialogFragment extends DialogFragment {
     }
 
     private void createAccount() {
-        NoteApplication application = (NoteApplication) getActivity().getApplication();
-        LoginManager loginManager = application.getLoginManager();
-        loginManager.register(usernameEditText.getText().toString(), passwordEditText.getText().toString(), passwordCheckEditText.getText().toString());
-
+        NoteApplication noteApplication = (NoteApplication) getActivity().getApplication();
+        LoginManager loginManager = noteApplication.getLoginManager();
+        loginManager.register(usernameEditText.getText().toString(),
+                              passwordEditText.getText().toString(),
+                              passwordCheckEditText.getText().toString());
         dismiss();
     }
 

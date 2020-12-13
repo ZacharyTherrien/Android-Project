@@ -2,37 +2,37 @@ package com.example.project.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class LoginManagerStub implements LoginManager{
 
-    public static final String PREFERENCES_NAME = "login-manager";
-    public static final String PREFERENCE_USERNAME = "username";
-    public static final String PREFERENCE_UUID = "uuid";
+    private static final String PREFERENCE_NAME = "login-manager";
+    private static final String PREFERENCE_USERNAME = "username";
+    private static final String PREFERENCE_UUID = "UUID";
 
-    private static class Account {
-        public String uuid;
+    private static class Account{
+        public String UUID;
         public String password;
 
-        public Account(String uuid, String password) {
-            this.uuid = uuid;
+        public Account(String UUID, String password){
+            this.UUID = UUID;
             this.password = password;
         }
     }
 
     private static Map<String, Account> accounts;
 
-    static {
+    static{
         accounts = new HashMap<>();
-        accounts.put("george", new Account(UUID.randomUUID().toString(), "georgePWD"));
+        accounts.put("Ian", new Account(java.util.UUID.randomUUID().toString(), "JAVA IS THE BEST"));
     }
 
-    private boolean loggedIn;
-    private String username;
-    private String uuid;
+    boolean loggedIn;
+    String username;
+    String UUID;
 
     private OnLoginListener onLoginListener;
 
@@ -41,11 +41,11 @@ public class LoginManagerStub implements LoginManager{
     public LoginManagerStub(Context context) {
         this.context = context;
 
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        if(preferences.contains(PREFERENCE_USERNAME)) {
+        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        if(preferences.contains(PREFERENCE_USERNAME)){
             loggedIn = true;
-            username = preferences.getString(PREFERENCE_USERNAME, ""); // Corrected
-            uuid = preferences.getString(PREFERENCE_UUID, "");
+            this.username = preferences.getString(PREFERENCE_USERNAME, "");
+            this.UUID = preferences.getString(PREFERENCE_UUID, "");
         }
         else
             loggedIn = false;
@@ -60,27 +60,31 @@ public class LoginManagerStub implements LoginManager{
     public void login(String username, String password) {
         if (accounts.containsKey(username)) {
             Account account = accounts.get(username);
-            if (accounts.get(username).password.equals((password))) {
-                uuid = account.uuid;
+            if (account.password.equals(password)) {
+                this.UUID = account.UUID;
                 loggedIn = true;
                 this.username = username;
 
-                SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-                preferences.edit()
-                        .putString(PREFERENCE_USERNAME, username)
-                        .putString(PREFERENCE_UUID, uuid)
-                        .apply();
+                SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+                preferences.edit().putString(PREFERENCE_USERNAME, username)
+                                  .putString(PREFERENCE_UUID, UUID)
+                                  .apply();
 
                 if (onLoginListener != null)
-                    onLoginListener.onLogin(uuid);
-            } else {
+                    onLoginListener.onLogin(UUID);
+
+                Log.d("LOGGED IN", "Username:: " + this.username);
+                Log.d("LOGGED IN", "UUID: " + this.UUID);
+            }
+            else {
                 if (onLoginListener != null)
                     onLoginListener.onError("Incorrect password.");
                 loggedIn = false;
             }
-        } else {
-            if (onLoginListener != null)
-                onLoginListener.onError("Incorrect username.");
+        }
+        else {
+            if(onLoginListener != null)
+                onLoginListener.onError("Invalid username.");
             loggedIn = false;
         }
     }
@@ -88,39 +92,36 @@ public class LoginManagerStub implements LoginManager{
     @Override
     public void logout() {
         loggedIn = false;
-        username = "";
-        uuid = "";
+        this.username = "";
+        this.UUID = "";
 
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        preferences.edit()
-                .remove(PREFERENCE_USERNAME)
-                .remove(PREFERENCE_UUID)
-                .apply();
+        SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        preferences.edit().remove(PREFERENCE_USERNAME)
+                          .remove(PREFERENCE_UUID)
+                          .apply();
 
-        if (onLoginListener != null)
+        if(onLoginListener != null)
             onLoginListener.onLogout();
     }
 
     @Override
     public void register(String username, String password, String passwordCheck) {
         if (!password.equals(passwordCheck)) {
-            if (onLoginListener != null)
-                onLoginListener.onError("Passwords do not match!");
+            if(onLoginListener != null)
+                onLoginListener.onError("Paswords do not match");
             return;
         }
-
-        if (!password.equals(username)) {
-            if (onLoginListener != null)
-                onLoginListener.onError("Username in use.");
+        if(accounts.containsKey(username)){
+            if(onLoginListener != null)
+                onLoginListener.onError("Username already exists.");
             return;
         }
-
-        uuid = UUID.randomUUID().toString();
-        loggedIn = true;
+        this.loggedIn = true;
+        this.UUID = java.util.UUID.randomUUID().toString();
         this.username = username;
-        accounts.put(username, new Account(uuid, password));
-        if (onLoginListener != null)
-            onLoginListener.onRegister(uuid);
+        accounts.put(username, new Account(this.UUID, password));
+        if(onLoginListener != null)
+            onLoginListener.onRegister(this.UUID);
     }
 
     @Override
@@ -130,15 +131,11 @@ public class LoginManagerStub implements LoginManager{
 
     @Override
     public String getUsername() {
-        if (!loggedIn)
-            throw new IllegalStateException("Not logged in.");
         return username;
     }
 
     @Override
-    public String getUuid() {
-        if (!loggedIn)
-            throw new IllegalStateException("Not logged in.");
-        return uuid;
+    public String getUUID() {
+        return UUID;
     }
 }
