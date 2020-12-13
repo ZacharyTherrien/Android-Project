@@ -6,13 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.project.R;
 import com.example.project.ui.NoteApplication;
+import com.example.project.R;
 
 public class LoginDialogFragment extends DialogFragment {
 
@@ -58,8 +59,29 @@ public class LoginDialogFragment extends DialogFragment {
     }
 
     private void login() {
-        NoteApplication noteApplication = (NoteApplication) getActivity().getApplication();
-        LoginManager loginManager = noteApplication.getLoginManager();
+        NoteApplication application = (NoteApplication) getActivity().getApplication();
+        LoginManager loginManager = application.getLoginManager();
+        loginManager.setOnLoginListener(new OnLoginListener() {
+            @Override
+            public void onLogin(String uuid) {
+                dismiss();
+            }
+
+            @Override
+            public void onLogout() {
+
+            }
+
+            @Override
+            public void onRegister(String uuid) {
+
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(getContext(), "Login error: " + message, Toast.LENGTH_LONG).show();
+            }
+        });
         loginManager.login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
     }
 }

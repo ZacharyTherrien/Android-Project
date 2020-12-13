@@ -1,20 +1,21 @@
 package com.example.project.login;
 
-/***
- * Defines the structure for the login manager.
+/**
+ * Defines a login structure of the login manager.
  */
+
 public interface LoginManager {
 
     /**
-     * Set the on click listener for the manager
-     * @param onLoginListener the listener.
+     * Set the login-event listener for the manager.
+     * @param onLoginListener
      */
     void setOnLoginListener(OnLoginListener onLoginListener);
 
     /**
-     * Attempt a login to the application
-     * @param username The login username
-     * @param password The login password
+     *  Attempt a login to the application.
+     * @param username The login username.
+     * @param password The login password.
      */
     void login(String username, String password);
 
@@ -25,27 +26,27 @@ public interface LoginManager {
 
     /**
      * Register a new user for the application.
-     * @param username The new username.
+     * @param username The new usernmae.
      * @param password The password.
-     * @param passwordCheck Verify the password.
+     * @param passwordCheck To verify the password.
      */
     void register(String username, String password, String passwordCheck);
 
     /**
-     * Determine if there is a user logged in.
-     * @return boolean representing if the user is logged in or not.
+     * Determine if there is a logged in user.
+     * @return
      */
     boolean isLoggedIn();
 
     /**
-     * Get the username name of the user currently logged in.
+     * Get the username of the currently logged in user.
      * @return The username.
      */
     String getUsername();
 
     /**
-     * Get the UUID of the user currently logged in.
+     * Get the UUID of the currently logged in user.
      * @return The UUID.
      */
-    String getUUID();
+    String getUuid();
 }
