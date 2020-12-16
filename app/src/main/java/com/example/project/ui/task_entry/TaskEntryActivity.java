@@ -19,6 +19,7 @@ public class TaskEntryActivity extends AppCompatActivity {
 
     //Fields
     private Entry entry;
+    private TaskEntryFragment taskEntryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +35,22 @@ public class TaskEntryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = getIntent();
                 setResult(Activity.RESULT_OK, intent);
-                intent.putExtra("Entry", TaskEntryActivity.this.entry);
+                intent.putExtra("Entry", taskEntryFragment.getEntry());
                 finish();
             }
         });
 
+        //Get the task entry fragment.
+        this.taskEntryFragment = (TaskEntryFragment) getSupportFragmentManager().findFragmentById(R.id.task_overview_fragment);
+
+        //Get the entry from the intent
         this.entry = new Entry();
+
+//        Intent intent = new Intent();
+//        this.entry = intent.getExtras().getParcelable("Entry");
+
+        //Set the entry's properties to the views.
+        taskEntryFragment.setEntry(this.entry);
     }
 
     public Entry getEntry(){
