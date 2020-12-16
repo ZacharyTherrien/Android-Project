@@ -7,6 +7,28 @@ import androidx.annotation.NonNull;
 
 public class Task implements Parcelable {
 
+    private static class TaskRepository{
+        public Embedded _embedded;
+        public Links _links;
+    }
+
+    private static class Embedded{
+        public Task[] tasks;
+    }
+
+    private static class Links{
+        public Href self;
+        public Href task;
+        public Href user;
+        public Href entries;
+        public Href collaborators;
+    }
+
+    private static class Href{
+        public String href;
+        public boolean templated;
+    }
+
     //Fields
     String uuid;
     String user_uuid;
