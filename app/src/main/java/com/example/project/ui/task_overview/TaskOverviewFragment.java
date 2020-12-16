@@ -1,6 +1,7 @@
 package com.example.project.ui.task_overview;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.example.project.model.Entry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class TaskOverviewFragment extends Fragment {
     private View root;
@@ -50,6 +52,8 @@ public class TaskOverviewFragment extends Fragment {
 
     private void createEntry(){
         Entry entry = new Entry();
+        entry.setUuid(UUID.randomUUID().toString());
+        this.entries.add(entry);
         this.editEntry(entry);
     }
 
@@ -61,6 +65,8 @@ public class TaskOverviewFragment extends Fragment {
         for (int i = 0; i < this.entries.size(); i++) {
             if (this.entries.get(i).getUuid().equals(entry.getUuid())){
                 this.entries.set(i, entry);
+                this.adapter.update();
+                break;
             }
         }
     }

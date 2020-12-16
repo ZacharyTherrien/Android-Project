@@ -56,7 +56,6 @@ public class TaskOverviewActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         assert extras != null;
         Entry entry = (Entry) extras.get("Entry");
-        Log.d("reeeeeeeee", entry.toString());
         fragment.saveEntry(entry);
     }
 }

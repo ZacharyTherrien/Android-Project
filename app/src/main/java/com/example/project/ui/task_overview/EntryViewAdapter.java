@@ -85,6 +85,7 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
 
         private void setName(){
             TextView nameView = this.root.findViewById(R.id.overview_item_name);
+            if (this.entry.getName().equals("")) nameView.setText("(No Name)");
             nameView.setText(this.entry.getName());
         }
 
