@@ -33,10 +33,6 @@ public class TaskEntryFragment extends Fragment {
 
     /**
      * TODO Ask Ian:
-     * - How to get a value from the dialog fragment.
-     * - A few milisecond delay when subtracting date's times.
-     * - EntryActivity issue with scope in onClickListener.
-     * - Stack of activity/intent from home -> user -> task.
      */
 
 
@@ -192,14 +188,6 @@ public class TaskEntryFragment extends Fragment {
         amountFragment.show(getChildFragmentManager(), "Choose Amount");
     }
 
-    //Provided an instance of entry, set it and its fields.
-    public void setEntry(Entry entry){
-        //Set the note of the fragment to the one provided.
-        this.entry = entry;
-        //Now set the fields to the fragment.
-
-    }
-
     private void SwitchObtained(){
         dateObtained = false;
     }
@@ -258,5 +246,18 @@ public class TaskEntryFragment extends Fragment {
                 totalTextView.setText(Integer.toString(entry.getTime()));
             }
         }
+    }
+
+    public Entry getEntry() {
+        return this.entry;
+    }
+
+    //Provided an instance of entry, set it and its fields.
+    public void setEntry(Entry entry){
+        //Set the note of the fragment to the one provided.
+        this.entry = entry;
+        //Now set the fields to the fragment.
+        nameEditText.setText(entry.getName());
+        totalTextView.setText(Integer.toString(entry.getTime()));
     }
 }
