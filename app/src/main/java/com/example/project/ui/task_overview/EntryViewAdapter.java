@@ -16,6 +16,7 @@ import com.example.project.R;
 import com.example.project.model.Entry;
 import com.example.project.ui.task_entry.TaskEntryActivity;
 
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 
@@ -24,18 +25,20 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
     private Context context;
     private List<Entry> entries;
     private LayoutInflater inflater;
+    private TaskOverviewFragment.ViewHolderOnClickCallback holderCallback;
 
-    public EntryViewAdapter(Context context, List<Entry> entries) {
+    public EntryViewAdapter(Context context, List<Entry> entries, TaskOverviewFragment.ViewHolderOnClickCallback holderCallback) {
         this.context = context;
         this.entries = entries;
         this.inflater = LayoutInflater.from(this.context);
+        this.holderCallback = holderCallback;
     }
 
     @NonNull
     @Override
     public EntryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = this.inflater.inflate(R.layout.task_overview_item, parent, false);
-        return new EntryViewHolder(view);
+        return new EntryViewHolder(view, this.holderCallback);
     }
 
     @Override
@@ -55,11 +58,13 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
     public static class EntryViewHolder extends RecyclerView.ViewHolder {
 
         private final View root;
+        private final TaskOverviewFragment.ViewHolderOnClickCallback callback;
         private Entry entry;
 
-        public EntryViewHolder(@NonNull View root){
+        public EntryViewHolder(@NonNull View root, TaskOverviewFragment.ViewHolderOnClickCallback callback){
             super(root);
             this.root = root;
+            this.callback = callback;
         }
 
         public void set(Entry entry) {
@@ -67,15 +72,13 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
 
             setName();
             setTime();
-            setOnClick();
+            setOnClick(this.callback);
         }
 
-        private void setOnClick(){
+        private void setOnClick(final TaskOverviewFragment.ViewHolderOnClickCallback callback){
             this.root.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    Activity activity = (Activity) v.getContext();
-                    Intent intent = new Intent(activity, TaskEntryActivity.class);
-                    activity.startActivityForResult(intent, 1);
+                    callback.execute(entry);
                 }
             });
         }
