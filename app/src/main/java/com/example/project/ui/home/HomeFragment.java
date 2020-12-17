@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,28 +18,38 @@ import com.example.project.R;
 import com.example.project.login.LoginDialogFragment;
 import com.example.project.login.LoginManager;
 import com.example.project.login.OnLoginListener;
+import com.example.project.model.Entry;
 import com.example.project.model.Task;
 import com.example.project.ui.TaskApplication;
+import com.example.project.ui.task_overview.TaskOverviewActivity;
+import com.example.project.ui.task_overview.TaskOverviewFragment;
+import com.example.project.ui.user_stats.UserStatsActivity;
 import com.example.project.ui.user_stats.UserStatsAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class HomeFragment extends Fragment {
 
     //Fields
-    private UserStatsAdapter adapter;
+    private View root;
+    private HomeAdapter adapter;
+    private HomeActivity activity;
     private List<Task> tasks;
 
     //Views
     FloatingActionButton addFloatingButton;
     RecyclerView tasksRecycleView;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        activity = (HomeActivity) getActivity();
 
         addFloatingButton = root.findViewById(R.id.add_FloatingActionButton);
         tasksRecycleView = root.findViewById(R.id.tasks_RecyclerView);
@@ -55,13 +66,14 @@ public class HomeFragment extends Fragment {
         tasks.add(new Task("0009", "0001", "Gaming", "Relax and play Switch games."));
         tasks.add(new Task("00010", "0001", "Shopping", "Get groceries while they're on sale."));
 
-        adapter = new UserStatsAdapter(tasks);
+        adapter = new HomeAdapter(tasks);
         tasksRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         addFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //adapter.create();
+                Toast.makeText(getActivity(), "yeet", Toast.LENGTH_LONG).show();
+                createTask();
             }
         });
 
@@ -106,5 +118,36 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    private void createTask() {
+        Task task = new Task();
+        task.setUuid(UUID.randomUUID().toString());
+        tasks.add(task);
+        editTask(task);
+    }
 
+    private void editTask(Task task){
+        this.activity.sendTaskToTaskPageAndBack(this.root, task);
+    }
+
+    public void saveTask(Task task){
+        for (int i = 0; i < this.tasks.size(); i++) {
+            if (this.tasks.get(i).getUuid().equals(task.getUuid())){
+                this.tasks.set(i, task);
+                this.adapter.update();
+                break;
+            }
+        }
+    }
+
+    public static class ViewHolderOnClickCallback{
+        private final HomeFragment fragment;
+
+        public ViewHolderOnClickCallback(HomeFragment fragment){
+            this.fragment = fragment;
+        }
+
+        public void execute(Task task){
+            this.fragment.editTask(task);
+        }
+    }
 }
