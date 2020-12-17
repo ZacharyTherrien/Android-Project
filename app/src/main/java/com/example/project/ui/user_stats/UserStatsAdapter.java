@@ -77,7 +77,13 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
             this.task = task;
             this.position = position;
             taskNameTextView.setText(task.getName());
-            taskTimeTextView.setText(Integer.toString(task.getTotalTime()));
+
+            int time = task.getTotalTime();
+            int hr = time / 3600;
+            int min = (time % 3600) / 60;
+            int sec = time % 60;
+            String totalTime = String.format("%02d:%02d:%02d", hr, min, sec);
+            taskTimeTextView.setText(totalTime);
         }
     }
 
