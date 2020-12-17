@@ -51,15 +51,26 @@ public class TaskOverviewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // add listener to the android back button
-        // ends activity and returns instance of task back
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override public void handleOnBackPressed() {
-                Intent intent = getIntent();
-                setResult(Activity.RESULT_OK, intent);
-                intent.putExtra("Task", task);
-                finish();
+                goBack();
             }
         });
+
+        // listener for floating button to go back
+        findViewById(R.id.overview_back_fbtn).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                goBack();
+            }
+        });
+    }
+
+    // ends activity and returns instance of task back
+    private void goBack(){
+        Intent intent = getIntent();
+        setResult(Activity.RESULT_OK, intent);
+        intent.putExtra("Task", task);
+        finish();
     }
 
     // send an instance of an entry to the entry activity
