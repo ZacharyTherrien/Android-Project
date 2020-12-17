@@ -31,7 +31,7 @@ public class UserStatsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        userStatsFragment = (UserStatsFragment) getSupportFragmentManager().findFragmentById(R.id.list_Fragment);
+        userStatsFragment = (UserStatsFragment) getSupportFragmentManager().findFragmentById(R.id.task_overview_fragment);
 
         // ADDED FOR PIE CHART
         anyChartView = findViewById(R.id.any_chart_view);
