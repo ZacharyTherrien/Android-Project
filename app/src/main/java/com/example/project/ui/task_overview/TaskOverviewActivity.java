@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +22,7 @@ import com.example.project.R;
 import com.example.project.model.Entry;
 import com.example.project.model.Task;
 import com.example.project.ui.task_entry.TaskEntryActivity;
+import com.example.project.ui.task_entry.TaskEntryFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.Timestamp;
@@ -32,15 +34,28 @@ import java.util.List;
 import java.util.Random;
 
 public class TaskOverviewActivity extends AppCompatActivity {
-    private Task task;
+    protected Task task;
     protected TaskOverviewFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        this.task = intent.getExtras().getParcelable("Task");
+
         setContentView(R.layout.activity_task_overview);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override public void handleOnBackPressed() {
+                Intent intent = getIntent();
+                setResult(Activity.RESULT_OK, intent);
+                intent.putExtra("Task", task);
+                finish();
+            }
+        });
     }
 
     protected void sendEntryToEntryPageAndBack(View v, Entry entry){
