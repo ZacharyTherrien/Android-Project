@@ -93,7 +93,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.TaskViewHolder
     public void create() {
         Task t = new Task();
         this.tasks.add(t);
-        this.notifyItemInserted(tasks.size());
         this.notifyDataSetChanged();
     }
 }

@@ -41,7 +41,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Activity activity = (Activity) v.getContext();
                 Intent intent = new Intent(activity, UserStatsActivity.class);
-                activity.startActivityForResult(intent, 1);
+                intent.putExtra("Task", task);
+                activity.startActivityForResult(intent, 2);
             }
         });
     }
@@ -56,9 +57,15 @@ public class HomeActivity extends AppCompatActivity {
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
+        // Return to home fragment
+        if (requestCode == 2)
+            return;
+
         Bundle extras = intent.getExtras();
         assert extras != null;
         Task task = (Task) extras.get("Task");
+
+        // Call save method in fragment to update list, db, views
         fragment.saveTask(task);
     }
 }

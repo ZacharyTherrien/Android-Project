@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
         activity = (HomeActivity) getActivity();
+        activity.fragment = this;
 
         addFloatingButton = root.findViewById(R.id.add_FloatingActionButton);
         tasksRecycleView = root.findViewById(R.id.tasks_RecyclerView);
