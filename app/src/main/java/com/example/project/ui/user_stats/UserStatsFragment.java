@@ -10,25 +10,36 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.R;
 import com.example.project.model.Task;
+import com.example.project.ui.home.HomeActivity;
+import com.example.project.ui.home.HomeFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserStatsFragment extends Fragment {
 
-    UserStatsAdapter adapter;
+    private View root;
+    private UserStatsAdapter adapter;
+    private UserStatsActivity activity;
     private RecyclerView topTasksRecyclerView;
     private TextView totalTimeTextView;
+    private FloatingActionButton userBackBtn;
     List<Task> tasks = new ArrayList<>();
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_user_stats, container, false);
+        root = inflater.inflate(R.layout.fragment_user_stats, container, false);
+
+        activity = (UserStatsActivity) getActivity();
+        activity.fragment = this;
 
         tasks.add(new Task("0001", "0001", "Jogging", "Run around the block for some exercise."));
         tasks.add(new Task("0002", "0001", "Cooking", "Cook dinner for the kids."));
@@ -38,6 +49,7 @@ public class UserStatsFragment extends Fragment {
 
         topTasksRecyclerView = root.findViewById(R.id.topTasks_recylerView);
         totalTimeTextView = root.findViewById(R.id.totalTime_textView);
+        userBackBtn = root.findViewById(R.id.user_back_fbtn);
 
         int time = getTotalTime(tasks);
         int hr = time / 3600;
@@ -45,6 +57,14 @@ public class UserStatsFragment extends Fragment {
         int sec = time % 60;
         String totalTime = String.format("%02d:%02d:%02d", hr, min, sec);
         totalTimeTextView.setText("Total Time: " + totalTime);
+
+        // BACK BUTTON
+        userBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.goBackToHome(root);
+            }
+        });
 
         adapter = new UserStatsAdapter(tasks);
         topTasksRecyclerView.setAdapter(adapter);

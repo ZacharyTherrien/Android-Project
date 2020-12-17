@@ -3,35 +3,16 @@ package com.example.project.ui.task_overview;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.R;
 import com.example.project.model.Entry;
 import com.example.project.model.Task;
 import com.example.project.ui.task_entry.TaskEntryActivity;
-import com.example.project.ui.task_entry.TaskEntryFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 public class TaskOverviewActivity extends AppCompatActivity {
     protected Task task;
@@ -58,7 +39,7 @@ public class TaskOverviewActivity extends AppCompatActivity {
         });
 
         // listener for floating button to go back
-        findViewById(R.id.overview_back_fbtn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.user_back_fbtn).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 goBack();
             }
