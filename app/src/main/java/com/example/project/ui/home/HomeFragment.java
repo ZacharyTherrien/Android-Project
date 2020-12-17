@@ -18,12 +18,10 @@ import com.example.project.login.LoginDialogFragment;
 import com.example.project.login.LoginManager;
 import com.example.project.login.OnLoginListener;
 import com.example.project.model.Task;
-import com.example.project.ui.NoteApplication;
+import com.example.project.ui.TaskApplication;
 import com.example.project.ui.user_stats.UserStatsAdapter;
-import com.example.project.ui.user_stats.UserStatsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +66,7 @@ public class HomeFragment extends Fragment {
         });
 
         final LoginDialogFragment loginDialogFragment = new LoginDialogFragment();
-        NoteApplication taskApplication = (NoteApplication) getActivity().getApplication();
+        TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
         LoginManager loginManager = taskApplication.getLoginManager();
         loginDialogFragment.show(getChildFragmentManager(), "Login");
         loginManager.setOnLoginListener(new OnLoginListener() {

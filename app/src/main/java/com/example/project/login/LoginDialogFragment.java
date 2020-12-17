@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.project.R;
-import com.example.project.ui.NoteApplication;
+import com.example.project.ui.TaskApplication;
 
 public class LoginDialogFragment extends DialogFragment {
 
@@ -58,8 +58,8 @@ public class LoginDialogFragment extends DialogFragment {
     }
 
     private void login() {
-        NoteApplication noteApplication = (NoteApplication) getActivity().getApplication();
-        LoginManager loginManager = noteApplication.getLoginManager();
+        TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
+        LoginManager loginManager = taskApplication.getLoginManager();
         loginManager.login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
     }
 }
