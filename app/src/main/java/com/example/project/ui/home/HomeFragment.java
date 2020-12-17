@@ -3,6 +3,7 @@ package com.example.project.ui.home;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.example.project.login.LoginManager;
 import com.example.project.login.OnLoginListener;
 import com.example.project.model.Entry;
 import com.example.project.model.Task;
+import com.example.project.networking.HttpRequest;
+import com.example.project.networking.HttpResponse;
 import com.example.project.ui.TaskApplication;
 import com.example.project.ui.task_overview.TaskOverviewActivity;
 import com.example.project.ui.task_overview.TaskOverviewFragment;
@@ -27,8 +30,10 @@ import com.example.project.ui.user_stats.UserStatsActivity;
 import com.example.project.ui.user_stats.UserStatsAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class HomeFragment extends Fragment {
@@ -73,7 +78,6 @@ public class HomeFragment extends Fragment {
         addFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "yeet", Toast.LENGTH_LONG).show();
                 createTask();
             }
         });
@@ -115,15 +119,45 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         return root;
     }
 
     private void createTask() {
         Task task = new Task();
-        task.setUuid(UUID.randomUUID().toString());
+        String uuid = serverCreateTask(task);
+        task.setUuid(uuid);
         tasks.add(task);
         editTask(task);
+    }
+
+    private String serverCreateTask(Task task){
+        //First add the task to the server.
+        TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
+        String urlTask = String.format("http://%s:%s/task", taskApplication.getHost(), taskApplication.getPort());
+        String uuid = null;
+        try{
+            //Creating this sends a request, creating the task one the server, and gets back the response from the server.
+            HttpResponse response = new HttpRequest(urlTask)
+                    .method(HttpRequest.Method.POST)
+                    .contentType("application/json")
+                    .body(task.format())
+                    .perform();
+            //In the responses header, it will contain the uuid of the newly added note.
+            //String[] header = response.getHeaders().get("Location").get(0).split("/");
+            Map<String, List<String>> one = response.getHeaders();
+            List<String> two = one.get("Location");
+            String three = two.get(0);
+            String[] four = three.split("/");
+            Log.d("REULST", String.valueOf(four));
+            uuid = four[four.length - 1] ;
+            //Get the uuid from the header and set it.
+            //uuid = header[header.length - 1];
+        }
+        catch(IOException e){
+            Log.d("Task from Sever error: ", e.getMessage());
+        }
+        //Afte the  task has been added, get the task's uuid from the response and return it.
+        return uuid;
     }
 
     private void editTask(Task task){
