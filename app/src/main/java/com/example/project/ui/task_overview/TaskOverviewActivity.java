@@ -41,13 +41,17 @@ public class TaskOverviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // get the task from the intent
         Intent intent = getIntent();
         this.task = intent.getExtras().getParcelable("Task");
 
+        // spawn the fragment
         setContentView(R.layout.activity_task_overview);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // add listener to the android back button
+        // ends activity and returns instance of task back
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override public void handleOnBackPressed() {
                 Intent intent = getIntent();
@@ -58,6 +62,7 @@ public class TaskOverviewActivity extends AppCompatActivity {
         });
     }
 
+    // send an instance of an entry to the entry activity
     protected void sendEntryToEntryPageAndBack(View v, Entry entry){
         Activity activity = (Activity) v.getContext();
         Intent intent = new Intent(activity, TaskEntryActivity.class);
@@ -65,12 +70,15 @@ public class TaskOverviewActivity extends AppCompatActivity {
         activity.startActivityForResult(intent, 1);
     }
 
+    // get the instance of entry from the entry activity after it ended
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
         Bundle extras = intent.getExtras();
         assert extras != null;
         Entry entry = (Entry) extras.get("Entry");
+
+        // call fragments save method to update the list and db and views
         fragment.saveEntry(entry);
     }
 }

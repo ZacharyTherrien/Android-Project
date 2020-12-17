@@ -56,6 +56,10 @@ public class Entry implements Parcelable {
         return task_uuid;
     }
 
+    public void setTask_uuid(String uuid){
+        this.task_uuid = uuid;
+    }
+
     public String getName() {
         return name;
     }

@@ -27,6 +27,8 @@ public class TaskOverviewFragment extends Fragment {
     private TaskOverviewActivity activity;
     protected List<Entry> entries;
     private EntryViewAdapter adapter;
+
+    // text views for the name and description of the task
     private EditText nameView;
     private EditText descView;
 
@@ -36,7 +38,11 @@ public class TaskOverviewFragment extends Fragment {
         this.activity = (TaskOverviewActivity) getActivity();
         this.activity.fragment = this;
         this.entries = getEntriesFromServer();
-        this.adapter = new EntryViewAdapter(this.getContext(), this.entries, new ViewHolderOnClickCallback(this));
+
+        // send the callback class with a method to be used as the onclick listener for the view holders
+        this.adapter = new EntryViewAdapter(activity, this.entries, new ViewHolderOnClickCallback(this));
+
+        // get the text views
         this.nameView = this.root.findViewById(R.id.overview_task_name);
         this.descView = this.root.findViewById(R.id.overview_task_desc);
 
@@ -48,6 +54,7 @@ public class TaskOverviewFragment extends Fragment {
         return root;
     }
 
+    // sets the on click event listener for the new button
     private void setOnNewEntryClickListener(){
         this.root.findViewById(R.id.overview_new_entry_fbtn).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
@@ -56,17 +63,20 @@ public class TaskOverviewFragment extends Fragment {
         });
     }
 
+    // creates a recycler view, sets its layout manager and adapter
     private void doRecyclerViewStuff(){
         RecyclerView recyclerView = this.root.findViewById(R.id.overview_tasks);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(this.adapter);
     }
 
+    // set the 2 task fields to have the values from the task
     private void setTaskTextFields(){
         this.nameView.setText(this.activity.task.getName());
         this.descView.setText(this.activity.task.getDescription());
     }
 
+    // update the values in the task instance when the user changes the content of the text fields
     private void addEditTextOnChangeListeners(){
         this.nameView.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -85,31 +95,50 @@ public class TaskOverviewFragment extends Fragment {
         });
     }
 
+    // gets the entries from the server for the task
     private List<Entry> getEntriesFromServer(){
         return new ArrayList<>();
     }
 
+    // adds entry on the server db
+    private void addEntryToDatabase(Entry entry){
+
+    }
+
+    // updates entry on server db
+    private void updateEntryInDatabase(Entry entry){
+
+    }
+
+    // creates an entry and sends it to entry activity to be edited
     private void createEntry(){
         Entry entry = new Entry();
+
         entry.setUuid(UUID.randomUUID().toString());
+        entry.setTask_uuid(this.activity.task.getUuid());
         this.entries.add(entry);
+        this.addEntryToDatabase(entry);
         this.editEntry(entry);
     }
 
+    // edits an existing entry by sending it to the entry activity
     private void editEntry(Entry entry){
         this.activity.sendEntryToEntryPageAndBack(this.root, entry);
     }
 
+    // saves the instance of an entry in the list, db and view
     public void saveEntry(Entry entry){
         for (int i = 0; i < this.entries.size(); i++) {
             if (this.entries.get(i).getUuid().equals(entry.getUuid())){
                 this.entries.set(i, entry);
+                this.updateEntryInDatabase(entry);
                 this.adapter.update();
-                break;
+                return;
             }
         }
     }
 
+    // callback class
     public static class ViewHolderOnClickCallback{
         private final TaskOverviewFragment fragment;
 
@@ -117,6 +146,8 @@ public class TaskOverviewFragment extends Fragment {
             this.fragment = fragment;
         }
 
+        // method that gets called as the callback
+        // takes an entry and edits it
         public void execute(Entry entry){
             this.fragment.editEntry(entry);
         }
