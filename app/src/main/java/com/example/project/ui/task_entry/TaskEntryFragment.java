@@ -2,6 +2,8 @@ package com.example.project.ui.task_entry;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -34,7 +36,6 @@ public class TaskEntryFragment extends Fragment {
     /**
      * TODO Ask Ian:
      */
-
 
     //Get all the necessary views.
     TextView taskTextView;
@@ -74,6 +75,7 @@ public class TaskEntryFragment extends Fragment {
         entry = new Entry();
         dateObtained = false;
         startStopButton.setText("Start");
+        startStopButton.setBackgroundColor(Color.GREEN);
         timerOn = false;
 
         //Add event listeners and inner classes for their event handler.
@@ -128,9 +130,10 @@ public class TaskEntryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Add the time to the fragment and the entry.
-                int seconds = (int) (SystemClock.elapsedRealtime() - timeChronometer.getBase()) / 1000 - 1;
-                if(seconds > 0)
+                int seconds = (int) (pausedAt - timeChronometer.getBase()) / 1000;
+                if(seconds > 0){
                     entry.AddTime(seconds);
+                }
                 totalTextView.setText(Integer.toString(entry.getTime()));
                 //Finally, reset it.
                 timeChronometer.setBase(SystemClock.elapsedRealtime());
@@ -144,6 +147,8 @@ public class TaskEntryFragment extends Fragment {
                 //If the timer has not started yet, start it, otherwise, pause the timer.
                 if(!timerOn){
                     startStopButton.setText("Stop");
+                    startStopButton.setBackgroundColor(Color.RED);
+                    timeChronometer.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                     if(pausedAt != 0)
                         timeChronometer.setBase(timeChronometer.getBase() + SystemClock.elapsedRealtime() - pausedAt);
                     else
@@ -154,6 +159,8 @@ public class TaskEntryFragment extends Fragment {
                 }
                 else{
                     startStopButton.setText("Start");
+                    startStopButton.setBackgroundColor(Color.GREEN);
+                    timeChronometer.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                     pausedAt = SystemClock.elapsedRealtime();
                     timeChronometer.stop();
                     //Once the time is stopped, enable buttons again.

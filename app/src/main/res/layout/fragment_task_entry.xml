@@ -10,7 +10,8 @@
         android:id="@+id/task_TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Task: "
+        android:text="Entry:"
+        android:textStyle="bold"
         app:fontFamily="sans-serif-medium" />
 
     <EditText
@@ -25,7 +26,8 @@
         android:id="@+id/indicateor_TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Time:" />
+        android:text="Total Time:"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/total_TextView"
@@ -52,6 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Add by Amount:"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
             app:layout_constraintHorizontal_bias="0.489"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +65,7 @@
             android:id="@+id/amount_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#AAE368"
             android:text="Add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
@@ -72,6 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Add by dates:"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/top_GuideLine"
             app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
             app:layout_constraintHorizontal_bias="0.487"
@@ -91,6 +98,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add by Timer"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/middle_GuideLine"
             app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +114,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
             app:layout_constraintTop_toTopOf="@+id/top_GuideLine"
+            android:background="#AAE368"
             app:layout_constraintVertical_bias="0.537" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -126,6 +136,7 @@
             android:id="@+id/time_Chronometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_GuideLine"
             app:layout_constraintEnd_toStartOf="@+id/center_GuideLine"
             app:layout_constraintStart_toStartOf="parent"
@@ -139,6 +150,7 @@
             app:layout_constraintBottom_toTopOf="@+id/top_GuideLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/center_GuideLine"
+            android:background="#AAE368"
             app:layout_constraintTop_toBottomOf="@+id/amount_Button" />
 
         <Button
@@ -153,6 +165,7 @@
             android:id="@+id/reset_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#6CC1FA"
             android:text="Reset"
             app:layout_constraintBottom_toTopOf="@+id/startStop_Button"
             app:layout_constraintEnd_toEndOf="parent"
@@ -167,6 +180,8 @@
             app:layout_constraintBottom_toTopOf="@+id/end_GuideLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:background="#03DAC5"
+            android:textColor="#FFFFFF"
             app:layout_constraintTop_toTopOf="@+id/bottom_GuideLine" />
 
         <androidx.constraintlayout.widget.Guideline
