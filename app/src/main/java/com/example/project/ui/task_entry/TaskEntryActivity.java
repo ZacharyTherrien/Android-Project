@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -33,10 +34,13 @@ public class TaskEntryActivity extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                setResult(Activity.RESULT_OK, intent);
-                intent.putExtra("Entry", taskEntryFragment.getEntry());
-                finish();
+                goBack();
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override public void handleOnBackPressed() {
+                goBack();
             }
         });
 
@@ -51,6 +55,13 @@ public class TaskEntryActivity extends AppCompatActivity {
 
         //Set the entry's properties to the views.
         taskEntryFragment.setEntry(this.entry);
+    }
+
+    private void goBack(){
+        Intent intent = getIntent();
+        setResult(Activity.RESULT_OK, intent);
+        intent.putExtra("Entry", taskEntryFragment.getEntry());
+        finish();
     }
 
     public Entry getEntry(){
