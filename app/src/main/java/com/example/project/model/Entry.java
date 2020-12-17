@@ -3,9 +3,35 @@ package com.example.project.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.Date;
 
 public class Entry implements Parcelable {
+
+    //Inner classes
+    private static class TaskRepository{
+        public Entry.Embedded _embedded;
+        public Entry.Links _links;
+    }
+
+    private static class Embedded{
+        public Entry[] entries;
+    }
+
+    private static class Links{
+        public Entry.Href self;
+        public Entry.Href entry;
+        public Entry.Href user;
+        public Entry.Href entries;
+        public Entry.Href collaborators;
+    }
+
+    private static class Href{
+        public String href;
+        public boolean templated;
+    }
 
     //Fields
     private String uuid;
@@ -15,6 +41,7 @@ public class Entry implements Parcelable {
     private Date added_on;
     private Date started_on;
     private Date ended_on;
+    private Links _links;
 
     //Constructors
     public Entry(){
@@ -127,6 +154,41 @@ public class Entry implements Parcelable {
             return new Entry[size];
         }
     };
+
+    public String format() {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                .create();
+        Entry toJson = (Entry) this.clone();
+        toJson.setUuid(null);
+        return gson.toJson(toJson);
+    }
+
+    public static Entry parse(String json) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Entry entry = gson.fromJson(json, Entry.class);
+
+        String self = entry._links.entry.href;
+        String[] arr = self.split("/");
+        entry.setUuid(arr[arr.length - 1]);
+
+        return entry;
+    }
+
+    public static Entry[] parseArray(String json) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Entry.TaskRepository entryRepository = gson.fromJson(json, TaskRepository.class);
+        Entry[] entries =  entryRepository._embedded.entries;
+        for(int i = 0; i < entries.length; i++){
+            String self = entries[i]._links.self.href;
+            String[] arr = self.split("/");
+            entries[i].setUuid(arr[arr.length - 1]);
+        }
+
+        return entryRepository._embedded.entries;
+    }
 
     @Override
     public String toString() {
