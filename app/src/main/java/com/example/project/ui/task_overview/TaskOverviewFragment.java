@@ -25,7 +25,6 @@ import java.util.UUID;
 public class TaskOverviewFragment extends Fragment {
     private View root;
     private TaskOverviewActivity activity;
-    protected List<Entry> entries;
     private EntryViewAdapter adapter;
 
     // text views for the name and description of the task
@@ -36,11 +35,11 @@ public class TaskOverviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.root = inflater.inflate(R.layout.fragment_task_overview, container, false);
         this.activity = (TaskOverviewActivity) getActivity();
+        // set the fragment instance in activity to this instance of fragment
         this.activity.fragment = this;
-        this.entries = getEntriesFromServer();
 
         // send the callback class with a method to be used as the onclick listener for the view holders
-        this.adapter = new EntryViewAdapter(activity, this.entries, new ViewHolderOnClickCallback(this));
+        this.adapter = new EntryViewAdapter(activity, this.activity.task.getEntries(), new ViewHolderOnClickCallback(this));
 
         // get the text views
         this.nameView = this.root.findViewById(R.id.overview_task_name);
@@ -116,7 +115,7 @@ public class TaskOverviewFragment extends Fragment {
 
         entry.setUuid(UUID.randomUUID().toString());
         entry.setTask_uuid(this.activity.task.getUuid());
-        this.entries.add(entry);
+        this.activity.task.addEntry(entry);
         this.addEntryToDatabase(entry);
         this.editEntry(entry);
     }
@@ -128,9 +127,9 @@ public class TaskOverviewFragment extends Fragment {
 
     // saves the instance of an entry in the list, db and view
     public void saveEntry(Entry entry){
-        for (int i = 0; i < this.entries.size(); i++) {
-            if (this.entries.get(i).getUuid().equals(entry.getUuid())){
-                this.entries.set(i, entry);
+        for (int i = 0; i < this.activity.task.getEntries().size(); i++) {
+            if (this.activity.task.getEntry(i).getUuid().equals(entry.getUuid())){
+                this.activity.task.setEntry(i, entry);
                 this.updateEntryInDatabase(entry);
                 this.adapter.update();
                 return;
