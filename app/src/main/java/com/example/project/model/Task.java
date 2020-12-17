@@ -8,9 +8,12 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Task implements Parcelable {
 
-
+    //Inner classes
     private static class TaskRepository{
         public Embedded _embedded;
         public Links _links;
@@ -38,11 +41,13 @@ public class Task implements Parcelable {
     String user_uuid;
     String name;
     String description;
+    List<Entry> entries;
     private Links _links;
 
     public Task() {
         this.name = "";
         this.description = "";
+        this.entries = new ArrayList<>();
     }
 
     public Task(String uuid, String user_uuid, String name, String description) {
@@ -50,6 +55,7 @@ public class Task implements Parcelable {
         this.user_uuid = user_uuid;
         this.name = name;
         this.description = description;
+        this.entries = new ArrayList<>();
     }
 
     public Task(Parcel in) {
@@ -57,6 +63,9 @@ public class Task implements Parcelable {
         this.user_uuid = in.readString();
         this.name = in.readString();
         this.description = in.readString();
+
+        this.entries = new ArrayList<>();
+        in.readList(this.entries, Entry.class.getClassLoader());
     }
 
     //Methods
@@ -96,8 +105,40 @@ public class Task implements Parcelable {
         return this;
     }
 
+    public Entry getEntry(int position){
+        try {
+            return this.entries.get(position);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    public Task setEntry(int position, Entry entry){
+        this.entries.set(position, entry);
+        return this;
+    }
+
+    public List<Entry> getEntries(){
+        return this.entries;
+    }
+
+    public Task setEntries(List<Entry> entries){
+        this.entries = entries;
+        return this;
+    }
+
+    public Task addEntry(Entry entry){
+        this.entries.add(entry);
+        return this;
+    }
+
     public int getTotalTime(){
-        return 1;
+        int total = 0;
+        for (Entry entry : this.entries){
+            total += entry.getTime();
+        }
+        return total;
     }
 
     public Task clone(){
@@ -106,6 +147,7 @@ public class Task implements Parcelable {
         clone.user_uuid = this.user_uuid;
         clone.name = this.name;
         clone.description = this.description;
+        clone.entries = this.entries;
         return clone;
     }
 
@@ -146,11 +188,11 @@ public class Task implements Parcelable {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         TaskRepository taskRepository = gson.fromJson(json, TaskRepository.class);
-        Task[] notes =  taskRepository._embedded.tasks;
-        for(int i = 0; i < notes.length; i++){
-            String self = notes[i]._links.self.href;
+        Task[] tasks =  taskRepository._embedded.tasks;
+        for(int i = 0; i < tasks.length; i++){
+            String self = tasks[i]._links.self.href;
             String[] arr = self.split("/");
-            notes[i].setUuid(arr[arr.length - 1]);
+            tasks[i].setUuid(arr[arr.length - 1]);
         }
 
         return taskRepository._embedded.tasks;
@@ -160,10 +202,10 @@ public class Task implements Parcelable {
     @Override
     public String toString() {
         return "Task{" +
-                "uuid='" + uuid + '\'' +
+                "uuid='" + this.uuid + '\'' +
                 ", user_uuid='" + user_uuid + '\'' +
-                ", name='" + name + '\'' +
-                ", description=" + description +
+                ", name='" + this.name + '\'' +
+                ", description=" + this.description +
                 '}';
     }
 
@@ -178,5 +220,6 @@ public class Task implements Parcelable {
         parcel.writeString(this.user_uuid);
         parcel.writeString(this.name);
         parcel.writeString(this.description);
+        parcel.writeList(this.entries);
     }
 }

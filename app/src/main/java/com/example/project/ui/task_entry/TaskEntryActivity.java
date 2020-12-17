@@ -48,8 +48,6 @@ public class TaskEntryActivity extends AppCompatActivity {
         this.taskEntryFragment = (TaskEntryFragment) getSupportFragmentManager().findFragmentById(R.id.task_overview_fragment);
 
         //Get the entry from the intent
-//        this.entry = new Entry();
-
         Intent intent = getIntent();
         this.entry = intent.getExtras().getParcelable("Entry");
 
