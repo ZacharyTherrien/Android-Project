@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.R;
 import com.example.project.model.Entry;
+import com.example.project.model.Task;
 import com.example.project.ui.task_entry.TaskEntryActivity;
+import com.example.project.ui.task_entry.TaskEntryFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.Timestamp;
@@ -31,60 +34,43 @@ import java.util.List;
 import java.util.Random;
 
 public class TaskOverviewActivity extends AppCompatActivity {
-
-    private List<Entry> entries;
-    private EntryViewAdapter adapter;
+    protected Task task;
+    protected TaskOverviewFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        this.task = intent.getExtras().getParcelable("Task");
+
         setContentView(R.layout.activity_task_overview);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView recyclerView = findViewById(R.id.overview_tasks);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        this.entries = new ArrayList<>();
-
-        this.adapter = new EntryViewAdapter(this, this.entries);
-        recyclerView.setAdapter(this.adapter);
-
-        //TODO remove later.
-        findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createRandomEntry();
-            }
-        });
-
-        findViewById(R.id.button1).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Activity activity = (Activity) v.getContext();
-                Intent intent = new Intent(activity, TaskEntryActivity.class);
-                activity.startActivityForResult(intent, 1);
-
-                return true;
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override public void handleOnBackPressed() {
+                Intent intent = getIntent();
+                setResult(Activity.RESULT_OK, intent);
+                intent.putExtra("Task", task);
+                finish();
             }
         });
     }
 
-    private void createRandomEntry(){
-        Random random = new Random();
-        Entry entry = new Entry();
+    protected void sendEntryToEntryPageAndBack(View v, Entry entry){
+        Activity activity = (Activity) v.getContext();
+        Intent intent = new Intent(activity, TaskEntryActivity.class);
+        intent.putExtra("Entry", entry);
+        activity.startActivityForResult(intent, 1);
+    }
 
-        entry.setName("name" + (1000 + random.nextInt(9000)));
-        entry.setTime(random.nextInt(1000000));
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
 
-        entries.add(entry);
-
-        Collections.sort(this.entries, new Comparator<Entry>() {
-            @Override public int compare(Entry a, Entry b) {
-                return a.getName().compareTo(b.getName());
-            }
-        });
-
-        this.adapter.update();
+        Bundle extras = intent.getExtras();
+        assert extras != null;
+        Entry entry = (Entry) extras.get("Entry");
+        fragment.saveEntry(entry);
     }
 }

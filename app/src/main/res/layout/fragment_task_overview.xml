@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/overview_title"
+    <EditText
+        android:id="@+id/overview_task_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
@@ -16,17 +16,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:hint="title do go here"
+        android:hint="Task Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText">
-    </TextView>
+    </EditText>
 
-    <TextView
-        android:id="@+id/overview_desc"
+    <EditText
+        android:id="@+id/overview_task_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
@@ -34,12 +32,12 @@
         android:textSize="30sp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="description do be go here"
+        android:hint="Task Description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/overview_title"
+        app:layout_constraintTop_toBottomOf="@+id/overview_task_name"
         tools:ignore="HardcodedText">
-    </TextView>
+    </EditText>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/overview_tasks"
@@ -53,11 +51,10 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button1"
+        android:id="@+id/overview_new_entry_fbtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:clickable="true"
         android:focusable="true"
