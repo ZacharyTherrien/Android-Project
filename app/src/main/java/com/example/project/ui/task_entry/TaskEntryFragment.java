@@ -71,7 +71,7 @@ public class TaskEntryFragment extends Fragment {
         resetButton = root.findViewById(R.id.reset_Button);
         startStopButton = root.findViewById(R.id.startStop_Button);
 
-        //Set values into views and fields
+        //Set values into views and fields at the start.
         entry = new Entry();
         dateObtained = false;
         startStopButton.setText("Start");
@@ -92,6 +92,7 @@ public class TaskEntryFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                //Set the entry's name whenever a character is changed in the entry's text edit view.
                 entry.setName(nameEditText.getText().toString());
             }
         });
@@ -110,6 +111,7 @@ public class TaskEntryFragment extends Fragment {
                 DatePickerDialogFragment datePickerStart = DatePickerDialogFragment.create(new Date(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        //Indicate that the date was obtained and then move onto getting the time.
                         SwitchObtained();
                         GetDate(year, month, dayOfMonth);
                     }
@@ -121,6 +123,7 @@ public class TaskEntryFragment extends Fragment {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Reset the timer and the time stored.
                 timeChronometer.setBase(SystemClock.elapsedRealtime());
                 pausedAt = 0;
             }
@@ -146,6 +149,7 @@ public class TaskEntryFragment extends Fragment {
             public void onClick(View v) {
                 //If the timer has not started yet, start it, otherwise, pause the timer.
                 if(!timerOn){
+                    //After the timer has started, set it to stop.
                     startStopButton.setText("Stop");
                     startStopButton.setBackgroundColor(Color.RED);
                     timeChronometer.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -158,6 +162,7 @@ public class TaskEntryFragment extends Fragment {
                     EnableTimerButtons(false);
                 }
                 else{
+                    //Once the timer is stopped, set it to start.
                     startStopButton.setText("Start");
                     startStopButton.setBackgroundColor(Color.GREEN);
                     timeChronometer.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
