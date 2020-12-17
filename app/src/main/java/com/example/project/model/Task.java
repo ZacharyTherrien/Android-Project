@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Task implements Parcelable {
 
@@ -40,12 +41,13 @@ public class Task implements Parcelable {
     String user_uuid;
     String name;
     String description;
-    Entry[] entries;
+    List<Entry> entries;
     private Links _links;
 
     public Task() {
         this.name = "";
         this.description = "";
+        this.entries = new ArrayList<>();
     }
 
     public Task(String uuid, String user_uuid, String name, String description) {
@@ -53,7 +55,7 @@ public class Task implements Parcelable {
         this.user_uuid = user_uuid;
         this.name = name;
         this.description = description;
-        this.entries = new Entry[0];
+        this.entries = new ArrayList<>();
     }
 
     public Task(Parcel in) {
@@ -61,6 +63,9 @@ public class Task implements Parcelable {
         this.user_uuid = in.readString();
         this.name = in.readString();
         this.description = in.readString();
+
+        this.entries = new ArrayList<>();
+        in.readList(this.entries, Entry.class.getClassLoader());
     }
 
     //Methods
@@ -100,6 +105,34 @@ public class Task implements Parcelable {
         return this;
     }
 
+    public Entry getEntry(int position){
+        try {
+            return this.entries.get(position);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
+    public Task setEntry(int position, Entry entry){
+        this.entries.set(position, entry);
+        return this;
+    }
+
+    public List<Entry> getEntries(){
+        return this.entries;
+    }
+
+    public Task setEntries(List<Entry> entries){
+        this.entries = entries;
+        return this;
+    }
+
+    public Task addEntry(Entry entry){
+        this.entries.add(entry);
+        return this;
+    }
+
     public int getTotalTime(){
         int total = 0;
         for (Entry entry : this.entries){
@@ -114,6 +147,7 @@ public class Task implements Parcelable {
         clone.user_uuid = this.user_uuid;
         clone.name = this.name;
         clone.description = this.description;
+        clone.entries = this.entries;
         return clone;
     }
 
@@ -186,5 +220,6 @@ public class Task implements Parcelable {
         parcel.writeString(this.user_uuid);
         parcel.writeString(this.name);
         parcel.writeString(this.description);
+        parcel.writeList(this.entries);
     }
 }
