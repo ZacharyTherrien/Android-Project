@@ -1,6 +1,9 @@
 package com.example.project.ui.user_stats;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,11 +14,17 @@ import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Pie;
 import com.example.project.R;
+import com.example.project.model.Task;
+import com.example.project.ui.home.HomeActivity;
+import com.example.project.ui.home.HomeFragment;
+import com.example.project.ui.task_overview.TaskOverviewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserStatsActivity extends AppCompatActivity {
+
+    protected UserStatsFragment fragment;
 
     private UserStatsFragment userStatsFragment;
 
@@ -59,4 +68,10 @@ public class UserStatsActivity extends AppCompatActivity {
 
     // ADDED FOR PIE CHART
     // HOLY VIDEO: https://www.youtube.com/watch?v=qWBA2ikLJjU
+
+    protected void goBackToHome(View v){
+        Activity activity = (Activity) v.getContext();
+        Intent intent = new Intent(activity, HomeActivity.class);
+        activity.startActivityForResult(intent, 1);
+    }
 }
