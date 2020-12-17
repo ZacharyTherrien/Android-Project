@@ -5,7 +5,11 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class Task implements Parcelable {
+
 
     private static class TaskRepository{
         public Embedded _embedded;
@@ -34,6 +38,7 @@ public class Task implements Parcelable {
     String user_uuid;
     String name;
     String description;
+    private Links _links;
 
     public Task() {
         this.name = "";
@@ -95,7 +100,7 @@ public class Task implements Parcelable {
         return 1;
     }
 
-    public Task Clone(){
+    public Task clone(){
         Task clone = new Task();
         clone.uuid = this.uuid;
         clone.user_uuid = this.user_uuid;
@@ -115,6 +120,41 @@ public class Task implements Parcelable {
             return new Task[size];
         }
     };
+
+    public String format() {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                .create();
+        Task toJson = (Task) this.clone();
+        toJson.setUuid(null);
+        return gson.toJson(toJson);
+    }
+
+    public static Task parse(String json) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Task task = gson.fromJson(json, Task.class);
+
+        String self = task._links.task.href;
+        String[] arr = self.split("/");
+        task.setUuid(arr[arr.length - 1]);
+
+        return task;
+    }
+
+    public static Task[] parseArray(String json) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        TaskRepository taskRepository = gson.fromJson(json, TaskRepository.class);
+        Task[] notes =  taskRepository._embedded.tasks;
+        for(int i = 0; i < notes.length; i++){
+            String self = notes[i]._links.self.href;
+            String[] arr = self.split("/");
+            notes[i].setUuid(arr[arr.length - 1]);
+        }
+
+        return taskRepository._embedded.tasks;
+    }
 
     //Overried Methods
     @Override
