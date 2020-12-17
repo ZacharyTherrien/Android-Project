@@ -39,8 +39,12 @@ public class UserStatsFragment extends Fragment {
         topTasksRecyclerView = root.findViewById(R.id.topTasks_recylerView);
         totalTimeTextView = root.findViewById(R.id.totalTime_textView);
 
-        int totalTime = getTotalTime(tasks);
-        totalTimeTextView.setText(Integer.toString(totalTime) + " total seconds");
+        int time = getTotalTime(tasks);
+        int hr = time / 3600;
+        int min = (time % 3600) / 60;
+        int sec = time % 60;
+        String totalTime = String.format("%02d:%02d:%02d", hr, min, sec);
+        totalTimeTextView.setText("Total Time: " + totalTime);
 
         adapter = new UserStatsAdapter(tasks);
         topTasksRecyclerView.setAdapter(adapter);
