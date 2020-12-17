@@ -51,7 +51,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/overview_back_fbtn"
+        android:id="@+id/user_back_fbtn"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
