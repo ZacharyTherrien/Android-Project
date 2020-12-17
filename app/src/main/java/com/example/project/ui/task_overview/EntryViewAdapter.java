@@ -58,6 +58,7 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
     public static class EntryViewHolder extends RecyclerView.ViewHolder {
 
         private final View root;
+        // callback class used for the onclick listener
         private final TaskOverviewFragment.ViewHolderOnClickCallback callback;
         private Entry entry;
 
@@ -78,6 +79,7 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
         private void setOnClick(final TaskOverviewFragment.ViewHolderOnClickCallback callback){
             this.root.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
+                    // calls the method in the callback class with the current entry on click
                     callback.execute(entry);
                 }
             });
@@ -85,7 +87,6 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
 
         private void setName(){
             TextView nameView = this.root.findViewById(R.id.overview_item_name);
-            if (this.entry.getName().equals("")) nameView.setText("(No Name)");
             nameView.setText(this.entry.getName());
         }
 
@@ -94,20 +95,25 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
             timeView.setText(simplifySeconds(this.entry.getTime()));
         }
 
+        // simplifies a unix second time value into a more readable string
         private String simplifySeconds(int sec){
             final int SEC_IN_MIN = 60;
             final int SEC_IN_HR = 60 * 60;
             final int SEC_IN_DAY = 24 * 60 * 60;
 
+            // gets the largest whole number of days
             int days = sec / SEC_IN_DAY;
             sec %= SEC_IN_DAY;
 
+            // gets the largest whole number of hours on whats left
             int hrs = sec / SEC_IN_HR;
             sec %= SEC_IN_HR;
 
+            // repeat for minutes
             int mins = sec / SEC_IN_MIN;
             sec %= SEC_IN_MIN;
 
+            // return different strings based on which time level is set
             if (days > 0) return days + "D " + hrs + "H " + mins + "M " + sec + "S";
             else if (hrs > 0) return hrs + "H " + mins + "M " + sec + "S";
             else if (mins > 0) return mins + "M " + sec + "S";
