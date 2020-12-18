@@ -17,6 +17,8 @@ import com.example.project.ui.task_overview.TaskOverviewActivity;
 import com.example.project.ui.task_overview.TaskOverviewFragment;
 import com.example.project.ui.user_stats.UserStatsActivity;
 
+import java.util.ArrayList;
+
 public class HomeActivity extends AppCompatActivity {
     protected Task task;
     protected HomeFragment fragment;
@@ -36,12 +38,12 @@ public class HomeActivity extends AppCompatActivity {
 
         button2 = findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 Activity activity = (Activity) v.getContext();
                 Intent intent = new Intent(activity, UserStatsActivity.class);
                 intent.putExtra("Task", task);
+                intent.putParcelableArrayListExtra("Tasks", (ArrayList<Task>) fragment.getTasks());
                 activity.startActivityForResult(intent, 2);
             }
         });

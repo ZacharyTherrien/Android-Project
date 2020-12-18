@@ -2,7 +2,9 @@ package com.example.project.ui.home;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.example.project.model.Task;
 import com.example.project.networking.HttpRequest;
 import com.example.project.networking.HttpResponse;
 import com.example.project.ui.TaskApplication;
+import com.example.project.ui.user_stats.UserStatsActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -41,7 +44,6 @@ public class HomeFragment extends Fragment {
     //Views
     FloatingActionButton addFloatingButton;
     RecyclerView tasksRecycleView;
-
 
     @Nullable
     @Override
@@ -108,6 +110,7 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
+
         return root;
     }
 
@@ -197,7 +200,7 @@ public class HomeFragment extends Fragment {
         this.activity.sendTaskToTaskPageAndBack(this.root, task);
     }
 
-    public void saveTask(Task task){
+    public void saveTask(Task task) {
         //Find the task by uuid and then update it in the adapter.
         for (int i = 0; i < this.tasks.size(); i++) {
             if (this.tasks.get(i).getUuid().equals(task.getUuid())){
@@ -210,7 +213,7 @@ public class HomeFragment extends Fragment {
         serverUpdateTask(task);
     }
 
-    public void serverUpdateTask(Task task){
+    public void serverUpdateTask(Task task) {
         //First build the url to send the task to.
         TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
         String urlTask = String.format("http://%s:%s/task/%s", taskApplication.getHost(), taskApplication.getPort(), task.getUuid());
@@ -225,6 +228,10 @@ public class HomeFragment extends Fragment {
         catch(IOException e){
             Log.d("Task Update error: ", e.getMessage());
         }
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
     }
 
     public static class ViewHolderOnClickCallback{
