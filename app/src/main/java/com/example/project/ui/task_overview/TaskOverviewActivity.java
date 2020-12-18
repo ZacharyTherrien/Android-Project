@@ -70,6 +70,8 @@ public class TaskOverviewActivity extends AppCompatActivity {
         assert extras != null;
         Entry entry = (Entry) extras.get("Entry");
 
+        //First, update the task.
+        //fragment.updateTask();
         // call fragments save method to update the list and db and views
         fragment.saveEntry(entry);
     }

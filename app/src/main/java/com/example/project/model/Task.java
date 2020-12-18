@@ -163,9 +163,11 @@ public class Task implements Parcelable {
 
     public String format() {
         Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
                 .create();
         Task toJson = (Task) this.clone();
         toJson.setUuid(null);
+        toJson.setEntries(null);
         String product = gson.toJson(toJson);
         return product;
     }
