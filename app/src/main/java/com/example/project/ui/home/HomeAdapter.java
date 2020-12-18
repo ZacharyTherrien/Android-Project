@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project.R;
 import com.example.project.model.Task;
 import com.example.project.ui.task_overview.TaskOverviewActivity;
+import com.example.project.ui.util.TimeSignature;
 
 import java.util.List;
 
@@ -82,11 +83,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.TaskViewHolder
             taskNameTextView.setText(task.getName());
 
             int time = task.getTotalTime();
-            int hr = time / 3600;
-            int min = (time % 3600) / 60;
-            int sec = time % 60;
-            String totalTime = String.format("%02d:%02d:%02d", hr, min, sec);
-            taskTimeTextView.setText(totalTime);
+            taskTimeTextView.setText(TimeSignature.secondsToTime(time));
         }
     }
 
