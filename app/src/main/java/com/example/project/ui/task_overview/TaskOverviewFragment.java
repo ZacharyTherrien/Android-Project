@@ -17,7 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.R;
 import com.example.project.model.Entry;
+import com.example.project.networking.HttpRequest;
+import com.example.project.networking.HttpResponse;
+import com.example.project.ui.TaskApplication;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -100,8 +104,28 @@ public class TaskOverviewFragment extends Fragment {
     }
 
     // adds entry on the server db
-    private void addEntryToDatabase(Entry entry){
-
+    private String addEntryToDatabase(Entry entry){
+        //Begin by getting the task application class and building the URLs.
+        String uuid = null;
+        TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
+        String urlEntry = String.format("http://%s:%s/entry", taskApplication.getHost(), taskApplication.getPort());
+        String urlTask = String.format("http://%s:%s/task/%s", taskApplication.getHost(), taskApplication.getPort(), activity.task.getUuid());
+        try{
+            //Set the entry's task url first.
+            entry.setTask(urlTask);
+            //Now send a request to add the entry for the user's task and then get the response.
+            HttpResponse response = new HttpRequest(urlEntry)
+                    .method(HttpRequest.Method.POST)
+                    .contentType("application/json")
+                    .body(entry.format())
+                    .perform();
+            String[] header = response.getHeaders().get("Location").get(0).split("/");
+            uuid = (header[header.length - 1]);
+        }
+        catch(IOException e){
+            Log.d("Create Entry error: ", e.getMessage());
+        }
+        return uuid;
     }
 
     // updates entry on server db
@@ -112,11 +136,10 @@ public class TaskOverviewFragment extends Fragment {
     // creates an entry and sends it to entry activity to be edited
     private void createEntry(){
         Entry entry = new Entry();
-
-        entry.setUuid(UUID.randomUUID().toString());
-        entry.setTask_uuid(this.activity.task.getUuid());
+        entry.setTask(this.activity.task.getUuid());
         this.activity.task.addEntry(entry);
-        this.addEntryToDatabase(entry);
+        String uuid = this.addEntryToDatabase(entry);
+        entry.setUuid(uuid);
         this.editEntry(entry);
     }
 
