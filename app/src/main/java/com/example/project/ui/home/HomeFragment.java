@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,18 +23,12 @@ import com.example.project.model.Task;
 import com.example.project.networking.HttpRequest;
 import com.example.project.networking.HttpResponse;
 import com.example.project.ui.TaskApplication;
-import com.example.project.ui.task_overview.TaskOverviewActivity;
-import com.example.project.ui.task_overview.TaskOverviewFragment;
-import com.example.project.ui.user_stats.UserStatsActivity;
-import com.example.project.ui.user_stats.UserStatsAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class HomeFragment extends Fragment {
 
@@ -121,19 +114,48 @@ public class HomeFragment extends Fragment {
     private void setAdapter(ArrayList tasks){
         //Build the string to get the user's tasks.
         TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
-        String urlTasks = String.format("http://%s:%s/user/%s/tasks",
-                taskApplication.getHost(), taskApplication.getPort(), taskApplication.getLoginManager().getUUID());
+        String userUuid = taskApplication.getLoginManager().getUUID();
+        String urlTasks = String.format("http://%s:%s/user/%s/tasks", taskApplication.getHost(), taskApplication.getPort(), userUuid);
+        String urlUser = String.format("http://%s:%s/user/%s", taskApplication.getHost(), taskApplication.getPort(), userUuid);
         try{
             //Get the tasks as a response after making a request for them.
             HttpResponse response = new HttpRequest(urlTasks).perform();
             String tasksJson = response.getResponseBody();
             Task[] tasksResponse = Task.parseArray(tasksJson);
+            //Find all the tasks' entries.
+            getTaskEntries(tasksResponse);
+            //Add the user's uuid to the task.
+            for(Task task : tasksResponse){
+                task.setUser(urlUser);
+            }
             //Add the tasks to the adapter.
             tasks.addAll(Arrays.asList(tasksResponse));
             tasksRecycleView.setAdapter(adapter);
         }
         catch(IOException e){
             Log.d("Get user tasks error: ", e.getMessage());
+        }
+    }
+
+    private void getTaskEntries(Task[] taskResponse){
+        TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
+        //Find all the tasks' entries.
+        try{
+            for (Task task : taskResponse){
+                String urlTask = String.format("http://%s:%s/user/%s/tasks", taskApplication.getHost(), taskApplication.getPort(), task.getUuid());
+                String urlEntries = task.findEntries();
+                HttpResponse response = new HttpRequest(urlEntries).perform();
+                String entriesJson = response.getResponseBody();
+                Entry[] entries = Entry.parseArray(entriesJson);
+                //Set the entry's task uuid field before setting it to the task.
+                for (Entry entry : entries){
+                    entry.setTask(urlTask);
+                }
+                task.setEntries(Arrays.asList(entries));
+            }
+        }
+        catch(IOException e){
+            Log.d("Get Task Entries error", e.getMessage());
         }
     }
 
@@ -149,10 +171,11 @@ public class HomeFragment extends Fragment {
         //First add the task to the server.
         TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
         String urlTask = String.format("http://%s:%s/task", taskApplication.getHost(), taskApplication.getPort());
+        String urlUser = String.format("http://%s:%s/user/%s", taskApplication.getHost(), taskApplication.getPort(), taskApplication.getLoginManager().getUUID());
         String uuid = null;
         try{
-            //Before creating the note, kae sure to set which user created it.
-            task.setUser_uuid(taskApplication.getLoginManager().getUUID());
+            //Before creating the note, make sure to set which user created it.
+            task.setUser(urlUser);
             //Creating this sends a request, creating the task one the server, and gets back the response from the server.
             HttpResponse response = new HttpRequest(urlTask)
                     .method(HttpRequest.Method.POST)
@@ -162,8 +185,6 @@ public class HomeFragment extends Fragment {
             //In the responses header, it will contain the uuid of the newly added note.
             String[] header = response.getHeaders().get("Location").get(0).split("/");
             uuid = header[header.length - 1];
-            //Now add the user who created the task.
-            String urlUser = String.format("http://%s:%s/task", taskApplication.getHost(), taskApplication.getPort());
         }
         catch(IOException e){
             Log.d("Task from Sever error: ", e.getMessage());
