@@ -22,6 +22,9 @@ import com.example.project.ui.util.TimeSignature;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class UserStatsFragment extends Fragment {
@@ -42,18 +45,9 @@ public class UserStatsFragment extends Fragment {
         activity = (UserStatsActivity) getActivity();
         activity.fragment = this;
 
-        tasks.add(new Task("0001", "0001", "Jogging", "Run around the block for some exercise."));
-        tasks.add(new Task("0002", "0001", "Cooking", "Cook dinner for the kids."));
-        tasks.add(new Task("0003", "0001", "Cleaning", "Clean the house before inviting guests."));
-        tasks.add(new Task("0004", "0001", "Gaming", "Relax and play Switch games."));
-        tasks.add(new Task("0005", "0001", "Shopping", "Get groceries while they're on sale."));
-
         topTasksRecyclerView = root.findViewById(R.id.topTasks_recylerView);
         totalTimeTextView = root.findViewById(R.id.totalTime_textView);
         userBackBtn = root.findViewById(R.id.user_back_fbtn);
-
-        int time = getTotalTime(tasks);
-        totalTimeTextView.setText("Total Time: " + TimeSignature.secondsToTime(time));
 
         // BACK BUTTON
         userBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -70,11 +64,28 @@ public class UserStatsFragment extends Fragment {
         return root;
     }
 
-    public int getTotalTime(List<Task> list) {
+    public void setTotalTime(List<Task> list) {
         int sum = 0;
         for (Task t: list) {
             sum += t.getTotalTime();
         }
-        return sum;
+        totalTimeTextView.setText("Total Time: " + TimeSignature.secondsToTimeDetailed(sum));
+    }
+
+    public void setTop5Tasks(List<Task> taskList) {
+        // Get top 5 tasks with most total time
+        Collections.sort(taskList, new Comparator<Task>() {
+            @Override
+            public int compare(Task task1, Task task2) {
+                if (task2.getTotalTime() > task1.getTotalTime())
+                    return 1;
+                else
+                    return -1;
+            }
+        });
+
+        for (int i = 0; i < 5; i++) {
+            tasks.add(taskList.get(i));
+        }
     }
 }
