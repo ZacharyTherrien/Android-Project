@@ -130,11 +130,25 @@ public class TaskOverviewFragment extends Fragment {
 
     // updates entry on server db
     private void updateEntryInDatabase(Entry entry){
-
+        //Begin by building the needed URLs and getting the task application.
+        TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
+        String urlEntry = String.format("http://%s:%s/entry/%s", taskApplication.getHost(), taskApplication.getPort(), entry.getUuid());
+        try{
+            HttpResponse response = new HttpRequest(urlEntry)
+                    .method(HttpRequest.Method.PUT)
+                    .contentType("application/json")
+                    .body(entry.format())
+                    .perform();
+        }
+        catch(IOException e){
+            Log.d("Updating Entry error: ", e.getMessage());
+        }
     }
 
     // creates an entry and sends it to entry activity to be edited
     private void createEntry(){
+        //Update the task first.
+        
         Entry entry = new Entry();
         entry.setTask(this.activity.task.getUuid());
         this.activity.task.addEntry(entry);
