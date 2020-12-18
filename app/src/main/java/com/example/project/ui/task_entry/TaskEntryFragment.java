@@ -27,6 +27,7 @@ import com.example.project.model.Entry;
 import com.example.project.ui.util.AmountFragment;
 import com.example.project.ui.util.DatePickerDialogFragment;
 import com.example.project.ui.util.TimePickerDialogFragment;
+import com.example.project.ui.util.TimeSignature;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -137,7 +138,7 @@ public class TaskEntryFragment extends Fragment {
                 if(seconds > 0){
                     entry.AddTime(seconds);
                 }
-                totalTextView.setText(Integer.toString(entry.getTime()));
+                totalTextView.setText(TimeSignature.secondsToTime(entry.getTime()));
                 //Finally, reset it.
                 timeChronometer.setBase(SystemClock.elapsedRealtime());
                 pausedAt = 0;
@@ -194,7 +195,7 @@ public class TaskEntryFragment extends Fragment {
                     amount = amount * 60 * 60;
                 //Add the time to the entry.
                 entry.AddTime(amount);
-                totalTextView.setText(Integer.toString(entry.getTime()));
+                totalTextView.setText(TimeSignature.secondsToTime(entry.getTime()));
             }
         });
         amountFragment.show(getChildFragmentManager(), "Choose Amount");
@@ -255,7 +256,7 @@ public class TaskEntryFragment extends Fragment {
                 long total = (time - dateStart) / 1000;
                 //Add the time in the entry
                 entry.AddTime((int)total);
-                totalTextView.setText(Integer.toString(entry.getTime()));
+                totalTextView.setText(TimeSignature.secondsToTime(entry.getTime()));
             }
         }
     }
@@ -270,6 +271,6 @@ public class TaskEntryFragment extends Fragment {
         this.entry = entry;
         //Now set the fields to the fragment.
         nameEditText.setText(entry.getName());
-        totalTextView.setText(Integer.toString(entry.getTime()));
+        totalTextView.setText(TimeSignature.secondsToTime(entry.getTime()));
     }
 }
