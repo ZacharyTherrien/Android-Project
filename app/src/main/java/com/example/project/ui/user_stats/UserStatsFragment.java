@@ -18,6 +18,7 @@ import com.example.project.R;
 import com.example.project.model.Task;
 import com.example.project.ui.home.HomeActivity;
 import com.example.project.ui.home.HomeFragment;
+import com.example.project.ui.util.TimeSignature;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -52,11 +53,7 @@ public class UserStatsFragment extends Fragment {
         userBackBtn = root.findViewById(R.id.user_back_fbtn);
 
         int time = getTotalTime(tasks);
-        int hr = time / 3600;
-        int min = (time % 3600) / 60;
-        int sec = time % 60;
-        String totalTime = String.format("%02d:%02d:%02d", hr, min, sec);
-        totalTimeTextView.setText("Total Time: " + totalTime);
+        totalTimeTextView.setText("Total Time: " + TimeSignature.secondsToTime(time));
 
         // BACK BUTTON
         userBackBtn.setOnClickListener(new View.OnClickListener() {
