@@ -28,17 +28,15 @@ public class Task implements Parcelable {
         public Href task;
         public Href user;
         public Href entries;
-        public Href collaborators;
     }
 
     private static class Href{
         public String href;
-        public boolean templated;
     }
 
     //Fields
     String uuid;
-    String user_uuid;
+    String user;
     String name;
     String description;
     List<Entry> entries;
@@ -50,9 +48,9 @@ public class Task implements Parcelable {
         this.entries = new ArrayList<>();
     }
 
-    public Task(String uuid, String user_uuid, String name, String description) {
+    public Task(String uuid, String user, String name, String description) {
         this.uuid = uuid;
-        this.user_uuid = user_uuid;
+        this.user = user;
         this.name = name;
         this.description = description;
         this.entries = new ArrayList<>();
@@ -60,7 +58,7 @@ public class Task implements Parcelable {
 
     public Task(Parcel in) {
         this.uuid = in.readString();
-        this.user_uuid = in.readString();
+        this.user = in.readString();
         this.name = in.readString();
         this.description = in.readString();
 
@@ -78,12 +76,12 @@ public class Task implements Parcelable {
         return this;
     }
 
-    public String getUser_uuid() {
-        return user_uuid;
+    public String getUser() {
+        return user;
     }
 
-    public Task setUser_uuid(String user_uuid) {
-        this.user_uuid = user_uuid;
+    public Task setUser(String user) {
+        this.user = user;
         return this;
     }
 
@@ -144,7 +142,7 @@ public class Task implements Parcelable {
     public Task clone(){
         Task clone = new Task();
         clone.uuid = this.uuid;
-        clone.user_uuid = this.user_uuid;
+        clone.user = this.user;
         clone.name = this.name;
         clone.description = this.description;
         clone.entries = this.entries;
@@ -165,11 +163,11 @@ public class Task implements Parcelable {
 
     public String format() {
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
                 .create();
         Task toJson = (Task) this.clone();
         toJson.setUuid(null);
-        return gson.toJson(toJson);
+        String product = gson.toJson(toJson);
+        return product;
     }
 
     public static Task parse(String json) {
@@ -198,12 +196,16 @@ public class Task implements Parcelable {
         return taskRepository._embedded.tasks;
     }
 
+    public String findEntries(){
+        return this._links.entries.href;
+    }
+
     //Overried Methods
     @Override
     public String toString() {
         return "Task{" +
                 "uuid='" + this.uuid + '\'' +
-                ", user_uuid='" + user_uuid + '\'' +
+                ", user='" + user + '\'' +
                 ", name='" + this.name + '\'' +
                 ", description=" + this.description +
                 '}';
@@ -217,7 +219,7 @@ public class Task implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(this.uuid);
-        parcel.writeString(this.user_uuid);
+        parcel.writeString(this.user);
         parcel.writeString(this.name);
         parcel.writeString(this.description);
         parcel.writeList(this.entries);

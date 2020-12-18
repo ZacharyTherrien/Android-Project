@@ -35,39 +35,39 @@ public class Entry implements Parcelable {
 
     //Fields
     private String uuid;
-    private String task_uuid;
+    private String task;
     private String name;
     private int time;
-    private Date added_on;
-    private Date started_on;
-    private Date ended_on;
+    private Date addedOn;
+    private Date startedOn;
+    private Date endedOn;
     private Links _links;
 
     //Constructors
     public Entry(){
         this.name = "";
         this.time = 0;
-        this.added_on = new Date();
+        this.addedOn = new Date();
     }
 
     public Entry(String uuid, String task_uuid, String name, int time, Date added_on, Date started_on, Date ended_on) {
         this.uuid = uuid;
-        this.task_uuid = task_uuid;
+        this.task = task_uuid;
         this.name = name;
         this.time = time;
-        this.added_on = added_on;
-        this.started_on = started_on;
-        this.ended_on = ended_on;
+        this.addedOn = added_on;
+        this.startedOn = started_on;
+        this.endedOn = ended_on;
     }
 
     public Entry(Parcel in) {
         this.uuid = in.readString();
-        this.task_uuid = in.readString();
+        this.task = in.readString();
         this.name = in.readString();
         this.time = in.readInt();
-        this.added_on = (Date) in.readSerializable();
-        this.started_on = (Date) in.readSerializable();
-        this.ended_on = (Date) in.readSerializable();
+        this.addedOn = (Date) in.readSerializable();
+        this.startedOn = (Date) in.readSerializable();
+        this.endedOn = (Date) in.readSerializable();
     }
 
     //Methods
@@ -79,12 +79,12 @@ public class Entry implements Parcelable {
         this.uuid = uuid;
     }
 
-    public String getTask_uuid() {
-        return task_uuid;
+    public String getTask() {
+        return task;
     }
 
-    public void setTask_uuid(String uuid){
-        this.task_uuid = uuid;
+    public void setTask(String uuid){
+        this.task = uuid;
     }
 
     public String getName() {
@@ -105,25 +105,25 @@ public class Entry implements Parcelable {
         return this;
     }
 
-    public Date getAdded_on() {
-        return added_on;
+    public Date getAddedOn() {
+        return addedOn;
     }
 
     public Date getStarted_on() {
-        return started_on;
+        return startedOn;
     }
 
     public Entry setStarted_on(Date started_on) {
-        this.started_on = started_on;
+        this.startedOn = started_on;
         return this;
     }
 
     public Date getEnded_on() {
-        return ended_on;
+        return endedOn;
     }
 
     public Entry setEnded_on(Date ended_on) {
-        this.ended_on = ended_on;
+        this.endedOn = ended_on;
         return this;
     }
 
@@ -134,12 +134,12 @@ public class Entry implements Parcelable {
     public Entry clone(){
         Entry clone = new Entry();
         clone.uuid = this.uuid;
-        clone.task_uuid = this.task_uuid;
+        clone.task = this.task;
         clone.name = this.name;
         clone.time = this.time;
-        clone.added_on = this.added_on;
-        clone.started_on = this.started_on;
-        clone.ended_on = this.ended_on;
+        clone.addedOn = this.addedOn;
+        clone.startedOn = this.startedOn;
+        clone.endedOn = this.endedOn;
         return clone;
     }
 
@@ -194,12 +194,12 @@ public class Entry implements Parcelable {
     public String toString() {
         return "Entry{" +
                 "uuid='" + uuid + '\'' +
-                ", task_uuid='" + task_uuid + '\'' +
+                ", task='" + task + '\'' +
                 ", name='" + name + '\'' +
                 ", time=" + time +
-                ", added_on=" + added_on +
-                ", started_on=" + started_on +
-                ", ended_on=" + ended_on +
+                ", addedOn=" + addedOn +
+                ", startedOn=" + startedOn +
+                ", endedOn=" + endedOn +
                 '}';
     }
 
@@ -212,11 +212,11 @@ public class Entry implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(this.uuid);
-        parcel.writeString(this.task_uuid);
+        parcel.writeString(this.task);
         parcel.writeString(this.name);
         parcel.writeInt(this.time);
-        parcel.writeSerializable(this.added_on);
-        parcel.writeSerializable(this.started_on);
-        parcel.writeSerializable(this.ended_on);
+        parcel.writeSerializable(this.addedOn);
+        parcel.writeSerializable(this.startedOn);
+        parcel.writeSerializable(this.endedOn);
     }
 }

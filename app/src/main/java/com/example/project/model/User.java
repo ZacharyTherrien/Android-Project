@@ -30,7 +30,7 @@ public class User {
     private long id;
     private String name;
     private String email;
-    private String Uuid;
+    private String uuid;
     private String avatar;
     private Links _links;
 
@@ -46,7 +46,7 @@ public class User {
         this(id);
         this.name = name;
         this.email = email;
-        this.Uuid = java.util.UUID.randomUUID().toString();
+        this.uuid = java.util.UUID.randomUUID().toString();
     }
 
     public Long getId() {
@@ -76,12 +76,12 @@ public class User {
     }
 
     public User setUuid(String Uuid){
-        this.Uuid = Uuid;
+        this.uuid = Uuid;
         return this;
     }
 
     public String getUuid(){
-        return this.Uuid;
+        return this.uuid;
     }
 
     public User setAvatar(String avatar){
