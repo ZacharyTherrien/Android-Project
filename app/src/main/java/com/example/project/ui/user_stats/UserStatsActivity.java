@@ -26,15 +26,13 @@ import java.util.List;
 
 public class UserStatsActivity extends AppCompatActivity {
 
-    protected UserStatsFragment fragment;
-
-    private UserStatsFragment userStatsFragment;
-
-    // ADDED FOR PIE CHART
+    // VIEWS
     AnyChartView anyChartView;
+
+    // FIELDS
+    protected UserStatsFragment fragment;
+    private UserStatsFragment userStatsFragment;
     List<Task> tasks;
-    List<String> names;
-    List<Integer> times;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,32 +41,27 @@ public class UserStatsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Set views by their IDs
         userStatsFragment = (UserStatsFragment) getSupportFragmentManager().findFragmentById(R.id.task_overview_fragment);
 
-        tasks = new ArrayList<>();
-        names = new ArrayList<>();
-        times = new ArrayList<>();
-
         // Receive list of tasks
+        // Populate tasks field from intent
+        tasks = new ArrayList<>();
         Intent intent = getIntent();
         List<Task> taskList = intent.getParcelableArrayListExtra("Tasks");
-
         tasks = taskList;
-        for (int i = 0; i < taskList.size(); i++) {
-            names.add(taskList.get(i).getName());
-            times.add(taskList.get(i).getTotalTime());
-        }
 
+        // Calls fragment to set recycler view and total time textview
         fragment.setTop5Tasks(tasks);
         fragment.setTotalTime(tasks);
 
-        // ADDED FOR PIE CHART
+        // Enters data (task names & times) into pie chart
         anyChartView = findViewById(R.id.any_chart_view);
-        setupPieChart(userStatsFragment);
+        setupPieChart();
     }
 
-    // ADDED FOR PIE CHART
-    public void setupPieChart(UserStatsFragment frg) {
+    // Enters data (task names & times) into pie chart
+    public void setupPieChart() {
         Pie pie = AnyChart.pie();
         List<DataEntry> dataEntries = new ArrayList<>();
 
@@ -83,25 +76,20 @@ public class UserStatsActivity extends AppCompatActivity {
             }
         });
 
-        for (int i = 0; i < names.size(); i++) {
+        // Entering tasks into pie chart (no limit)
+        for (int i = 0; i < tasks.size(); i++) {
             dataEntries.add(new ValueDataEntry(tasks.get(i).getName(), tasks.get(i).getTotalTime()));
         }
 
         pie.data(dataEntries);
-        //pie.title("Earnings");
         anyChartView.setChart(pie);
     }
 
-    // ADDED FOR PIE CHART
-    // HOLY VIDEO: https://www.youtube.com/watch?v=qWBA2ikLJjU
-
+    // Called by fragment's back button on click listener
+    // Takes you tome Home activity
     protected void goBackToHome(View v){
         Activity activity = (Activity) v.getContext();
         Intent intent = new Intent(activity, HomeActivity.class);
         activity.startActivityForResult(intent, 1);
-    }
-
-    protected List<Task> getTasks() {
-        return tasks;
     }
 }

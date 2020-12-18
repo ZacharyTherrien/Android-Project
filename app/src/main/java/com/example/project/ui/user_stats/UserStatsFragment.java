@@ -29,27 +29,28 @@ import java.util.List;
 
 public class UserStatsFragment extends Fragment {
 
+    // VIEWS
     private View root;
     private UserStatsAdapter adapter;
     private UserStatsActivity activity;
     private RecyclerView topTasksRecyclerView;
     private TextView totalTimeTextView;
     private FloatingActionButton userBackBtn;
-    List<Task> tasks = new ArrayList<>();
 
+    // FIELDS
+    List<Task> tasks = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Set views by their IDs
         root = inflater.inflate(R.layout.fragment_user_stats, container, false);
-
         activity = (UserStatsActivity) getActivity();
         activity.fragment = this;
-
         topTasksRecyclerView = root.findViewById(R.id.topTasks_recylerView);
         totalTimeTextView = root.findViewById(R.id.totalTime_textView);
         userBackBtn = root.findViewById(R.id.user_back_fbtn);
 
-        // BACK BUTTON
+        // Back button on click listener
         userBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +65,9 @@ public class UserStatsFragment extends Fragment {
         return root;
     }
 
+    // Loop through all tasks (called in fragment)
+    // Get sum time time from all tasks
+    // Write into totalTimeTextView
     public void setTotalTime(List<Task> list) {
         int sum = 0;
         for (Task t: list) {
@@ -72,8 +76,10 @@ public class UserStatsFragment extends Fragment {
         totalTimeTextView.setText("Total Time: " + TimeSignature.secondsToTimeDetailed(sum));
     }
 
+    // Loop through all tasks (called in fragment)
+    // Get top 5 tasks with most total time
+    // Add top 5 tasks into tasks field
     public void setTop5Tasks(List<Task> taskList) {
-        // Get top 5 tasks with most total time
         Collections.sort(taskList, new Comparator<Task>() {
             @Override
             public int compare(Task task1, Task task2) {
@@ -84,8 +90,15 @@ public class UserStatsFragment extends Fragment {
             }
         });
 
-        for (int i = 0; i < 5; i++) {
-            tasks.add(taskList.get(i));
+        // Adding top 5 tasks from sorted list
+        // If <5 tasks, add null spot
+        int top = 5;
+        int max = Math.min(taskList.size(), top);
+        for (int i = 0; i < max; i++) {
+            if (taskList.get(i) == null)
+                tasks.add(null);
+            else
+                tasks.add(taskList.get(i));
         }
     }
 }
