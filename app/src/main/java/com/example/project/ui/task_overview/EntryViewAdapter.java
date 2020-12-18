@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project.R;
 import com.example.project.model.Entry;
 import com.example.project.ui.task_entry.TaskEntryActivity;
+import com.example.project.ui.util.TimeSignature;
 
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -92,32 +93,7 @@ public class EntryViewAdapter extends RecyclerView.Adapter<EntryViewAdapter.Entr
 
         private void setTime(){
             TextView timeView = this.root.findViewById(R.id.overview_item_time);
-            timeView.setText(simplifySeconds(this.entry.getTime()));
-        }
-
-        // simplifies a unix second time value into a more readable string
-        private String simplifySeconds(int sec){
-            final int SEC_IN_MIN = 60;
-            final int SEC_IN_HR = 60 * 60;
-            final int SEC_IN_DAY = 24 * 60 * 60;
-
-            // gets the largest whole number of days
-            int days = sec / SEC_IN_DAY;
-            sec %= SEC_IN_DAY;
-
-            // gets the largest whole number of hours on whats left
-            int hrs = sec / SEC_IN_HR;
-            sec %= SEC_IN_HR;
-
-            // repeat for minutes
-            int mins = sec / SEC_IN_MIN;
-            sec %= SEC_IN_MIN;
-
-            // return different strings based on which time level is set
-            if (days > 0) return days + "D " + hrs + "H " + mins + "M " + sec + "S";
-            else if (hrs > 0) return hrs + "H " + mins + "M " + sec + "S";
-            else if (mins > 0) return mins + "M " + sec + "S";
-            else return sec + "S";
+            timeView.setText(TimeSignature.secondsToTime(this.entry.getTime()));
         }
     }
 }
