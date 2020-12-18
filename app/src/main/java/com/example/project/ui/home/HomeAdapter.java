@@ -65,13 +65,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.TaskViewHolder
                     Activity act = (Activity) root.getContext();
                     // Create an intent
                     // This intent holds activity and the activity it wants to do:
-                    // TaskEntryActivity
+                    // TaskOverviewActivity
                     Intent intent = new Intent(act, TaskOverviewActivity.class);
                     // Extra tendency
                     // Set the intent's extra (map-like object) to the task
-                    // So that it can be set upon entering the TaskEntryActivity
+                    // So that it can be set upon entering the TaskOverviewActivity
                     intent.putExtra("Task", task);
-                    // Have activity start the TaskEntryActivity by providing it an intent
+                    // Have activity start the TaskOverviewActivity by providing it an intent
                     act.startActivityForResult(intent, 1);
                 }
             });

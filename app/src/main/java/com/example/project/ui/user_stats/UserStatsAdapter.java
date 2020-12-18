@@ -20,6 +20,7 @@ import java.util.List;
 
 public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.TaskViewHolder> {
 
+    // FIELDS
     private List<Task> tasks;
 
     public UserStatsAdapter(List<Task> tasks) { this.tasks = tasks; }
@@ -41,10 +42,14 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
     @Override
     public int getItemCount() { return tasks.size(); }
 
+    // TOP 5 TOTAL TASKS RECYCLER VIEW
     public class TaskViewHolder extends RecyclerView.ViewHolder {
 
+        // VIEWS
         private final TextView taskNameTextView;
         private final TextView taskTimeTextView;
+
+        // FIELDS
         private int position;
         private Task task;
 
@@ -53,6 +58,7 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
             taskNameTextView = root.findViewById(R.id.taskName_textView);
             taskTimeTextView = root.findViewById(R.id.taskTime_textView);
 
+            // On click listener for every task in recycler view
             root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -62,18 +68,20 @@ public class UserStatsAdapter extends RecyclerView.Adapter<UserStatsAdapter.Task
                     Activity act = (Activity) root.getContext();
                     // Create an intent
                     // This intent holds activity and the activity it wants to do:
-                    // TaskEntryActivity
+                    // TaskOverviewActivity
                     Intent intent = new Intent(act, TaskOverviewActivity.class);
                     // Extra tendency
                     // Set the intent's extra (map-like object) to the task
-                    // So that it can be set upon entering the TaskEntryActivity
+                    // So that it can be set upon entering the TaskOverviewActivity
                     intent.putExtra("Task", task);
-                    // Have activity start the TaskEntryActivity by providing it an intent
+                    // Start the TaskOverviewActivity by providing it an intent
                     act.startActivityForResult(intent, 1);
                 }
             });
         }
 
+        // Sets textviews for every task
+        // Called in onBindViewHolder
         public void set(Task task, int position) {
             this.task = task;
             this.position = position;
