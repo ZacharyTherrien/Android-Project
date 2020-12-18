@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.R;
 import com.example.project.model.Entry;
+import com.example.project.model.Task;
 import com.example.project.networking.HttpRequest;
 import com.example.project.networking.HttpResponse;
 import com.example.project.ui.TaskApplication;
@@ -103,7 +104,7 @@ public class TaskOverviewFragment extends Fragment {
         return new ArrayList<>();
     }
 
-    // adds entry on the server db
+    //Adds an entry on the server.
     private String addEntryToDatabase(Entry entry){
         //Begin by getting the task application class and building the URLs.
         String uuid = null;
@@ -119,6 +120,7 @@ public class TaskOverviewFragment extends Fragment {
                     .contentType("application/json")
                     .body(entry.format())
                     .perform();
+            //From the response body, get the uuid and set it to the entry.
             String[] header = response.getHeaders().get("Location").get(0).split("/");
             uuid = (header[header.length - 1]);
         }
@@ -128,12 +130,13 @@ public class TaskOverviewFragment extends Fragment {
         return uuid;
     }
 
-    // updates entry on server db
+    //Updates an entry on the server.
     private void updateEntryInDatabase(Entry entry){
         //Begin by building the needed URLs and getting the task application.
         TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
         String urlEntry = String.format("http://%s:%s/entry/%s", taskApplication.getHost(), taskApplication.getPort(), entry.getUuid());
         try{
+            //Now create a request to update the entry in the server.
             HttpResponse response = new HttpRequest(urlEntry)
                     .method(HttpRequest.Method.PUT)
                     .contentType("application/json")
@@ -148,13 +151,31 @@ public class TaskOverviewFragment extends Fragment {
     // creates an entry and sends it to entry activity to be edited
     private void createEntry(){
         //Update the task first.
-        
+        //updateTask();
         Entry entry = new Entry();
         entry.setTask(this.activity.task.getUuid());
         this.activity.task.addEntry(entry);
         String uuid = this.addEntryToDatabase(entry);
         entry.setUuid(uuid);
         this.editEntry(entry);
+    }
+
+    public void updateTask(){
+        Task task = activity.task;
+        //First build the url to send the task to.
+        TaskApplication taskApplication = (TaskApplication) getActivity().getApplication();
+        String urlTask = String.format("http://%s:%s/task/%s", taskApplication.getHost(), taskApplication.getPort(), task.getUuid());
+        try{
+            //Now create the request to update the note and send it.
+            HttpResponse response = new HttpRequest(urlTask)
+                    .method(HttpRequest.Method.PUT)
+                    .contentType("application/json")
+                    .body(task.format())
+                    .perform();
+        }
+        catch(IOException e){
+            Log.d("Task Update error: ", e.getMessage());
+        }
     }
 
     // edits an existing entry by sending it to the entry activity
