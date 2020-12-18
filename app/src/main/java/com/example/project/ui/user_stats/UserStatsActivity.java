@@ -30,8 +30,8 @@ public class UserStatsActivity extends AppCompatActivity {
 
     // ADDED FOR PIE CHART
     AnyChartView anyChartView;
-    String[] names = new String[5];
-    int[] times = new int[5];
+    List<String> names;
+    List<Integer> times;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,15 @@ public class UserStatsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         userStatsFragment = (UserStatsFragment) getSupportFragmentManager().findFragmentById(R.id.task_overview_fragment);
+
+        // Receive list of tasks
+        Intent intent = getIntent();
+        List<Task> taskList = intent.getParcelableArrayListExtra("Tasks");
+
+        for (int i = 0; i < taskList.size(); i++) {
+            names.add(taskList.get(i).getName());
+            times.add(taskList.get(i).getTotalTime());
+        }
 
         // ADDED FOR PIE CHART
         anyChartView = findViewById(R.id.any_chart_view);
@@ -52,13 +61,8 @@ public class UserStatsActivity extends AppCompatActivity {
         Pie pie = AnyChart.pie();
         List<DataEntry> dataEntries = new ArrayList<>();
 
-        for (int i = 0; i < frg.tasks.size(); i++) {
-            names[i] = frg.tasks.get(i).getName();
-            times[i] = frg.tasks.get(i).getTotalTime();
-        }
-
-        for (int i = 0; i < names.length; i++) {
-            dataEntries.add(new ValueDataEntry(names[i], times[i]));
+        for (int i = 0; i < names.size(); i++) {
+            dataEntries.add(new ValueDataEntry(names.get(i), times.get(i)));
         }
 
         pie.data(dataEntries);
